@@ -17,6 +17,11 @@ class RegisterationService
             $event = Event::find($event_id);
             $event->lockForUpdate();
 
+            // Check if Event is Published (Not Completed, Canceled, [Draft if someone tried from outside of the website])
+            if ($event->status !== 'published') {
+                throw new \Exception('Event is not published');
+            }
+
             // Calculate Capacities
             $maxCapacity = $event->capacity;
             $currentCapacity = Registeration::where('event_id', $event_id)
