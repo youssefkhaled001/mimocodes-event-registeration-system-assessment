@@ -1,14 +1,14 @@
-<div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
-    <table class="w-full text-sm text-left rtl:text-right text-body">
-        <thead class="bg-neutral-secondary-soft border-b border-default">
+<div class="relative overflow-x-auto rounded-lg border border-white/[0.08]">
+    <table class="w-full text-sm text-left">
+        <thead class="bg-white/[0.02] border-b border-white/[0.08]">
             <tr>
                 @foreach($columns as $column)
-                <th scope="col" class="px-6 py-3 font-medium">
+                <th scope="col" class="px-6 py-4 font-medium text-white/70 uppercase tracking-wider text-xs">
                     {{ $column }}
                 </th>
                 @endforeach
                 @if($actions)
-                <th scope="col" class="px-6 py-3 font-medium">
+                <th scope="col" class="px-6 py-4 font-medium text-white/70 uppercase tracking-wider text-xs">
                     Actions
                 </th>
                 @endif
@@ -16,9 +16,9 @@
         </thead>
         <tbody>
             @foreach($rows as $index => $row)
-            <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
+            <tr class="border-b border-white/[0.05] hover:bg-white/[0.02] transition-colors">
                 @foreach($row as $cell)
-                <td class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                <td class="px-6 py-4 text-white/80 whitespace-nowrap">
                     @if(is_array($cell))
                         <div class="px-2 py-1 capitalize text-xs rounded-full flex justify-center" style="background-color: {{ $cell['color'] }}; color: {{ $cell['text_color']??'white' }}">
                             {{ $cell['text'] }}
@@ -29,20 +29,20 @@
                 </td>
                 @endforeach
                 @if(!empty($actions))
-                <td class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap">
                     @foreach($actions as $action)
                     @php
                         $url = route($action['url'], $ids[$index]);
                         $method = $action['method'] ?? 'get';
                     @endphp
                     @if($method == 'get')
-                    <a href="{{ $url }}" class="text-primary hover:text-primary-hover mr-3 bg-transparent border-0 cursor-pointer underline">
+                    <a href="{{ $url }}" class="text-cyan-400 hover:text-cyan-300 mr-3 underline transition-colors">
                         {{ $action['label'] }}
                     </a>
                     @else
                     <button type="button" 
                             onclick="openDeleteModal('{{ $url }}', '{{ $method }}')" 
-                            class="text-red-600 hover:text-red-800 mr-3 bg-transparent border-0 cursor-pointer underline">
+                            class="text-red-400 hover:text-red-300 mr-3 bg-transparent border-0 cursor-pointer underline transition-colors">
                         {{ $action['label'] }}
                     </button>
                     @endif
@@ -54,7 +54,3 @@
         </tbody>
     </table>
 </div>
-
-<!-- Include reusable delete modal -->
-<x-delete-modal modal-id="deleteModal" />
-            
