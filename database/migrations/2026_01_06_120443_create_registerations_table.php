@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('registerations', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('event_id')->constrained('events');
-            $table->foreignId('attendee_id')->constrained('attendees');
+            $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
+            $table->foreignId('attendee_id')->constrained('attendees')->onDelete('cascade');
             $table->timestamp('registration_date');
             $table->enum('status', ['confirmed', 'waitlisted', 'cancelled']);
             $table->enum('payment_status', ['pending', 'paid', 'refunded']);
