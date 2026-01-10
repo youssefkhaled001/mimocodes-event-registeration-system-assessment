@@ -17,6 +17,14 @@ class EventController extends Controller
         return view('events.index', compact('events'));
     }
 
+    // Display all events for admin
+    public function adminIndex()
+    {
+        $events = Event::paginate(10);
+
+        return view('admin.events.index', compact('events'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

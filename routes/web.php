@@ -14,6 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         return view('admin.dashboard', compact('events'));
     })->name('dashboard');
+    Route::get('/admin/events', [EventController::class, 'adminIndex'])->name('admin.events');
     Route::get('/admin/create', [EventController::class, 'create'])->name('create.event');
     Route::post('/admin/create', [EventController::class, 'store'])->name('event.store');
 
