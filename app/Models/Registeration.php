@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Registeration extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -34,8 +37,6 @@ class Registeration extends Model
 
     /**
      * Get the event that this registration belongs to.
-     * 
-     * @return BelongsTo
      */
     public function event(): BelongsTo
     {
@@ -44,8 +45,6 @@ class Registeration extends Model
 
     /**
      * Get the attendee that this registration belongs to.
-     * 
-     * @return BelongsTo
      */
     public function attendee(): BelongsTo
     {
