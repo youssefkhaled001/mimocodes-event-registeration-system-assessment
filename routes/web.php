@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterationController;
 use App\Models\Event;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/admin/edit/{event}', [EventController::class, 'update'])->name('event.update');
 
     Route::delete('/admin/delete/{event}', [EventController::class, 'destroy'])->name('delete.event');
+
+    Route::get('/admin/registerations/{event}', [RegisterationController::class, 'index'])->name('view.event.registerations');
+    
+    Route::patch('/admin/registrations/{registeration}/payment-status', [RegisterationController::class, 'updatePaymentStatus'])->name('update.registration.payment');
+    
+    Route::patch('/admin/registrations/{registeration}/cancel', [RegisterationController::class, 'cancel'])->name('cancel.registration');
 
     Route::get('/admin/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
