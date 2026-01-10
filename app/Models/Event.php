@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Event Model
- * 
+ *
  * @property int $id
  * @property string $title
  * @property string|null $description
@@ -19,11 +19,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * 
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Registeration> $registrations
  */
 class Event extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -54,8 +55,6 @@ class Event extends Model
 
     /**
      * Get all registrations for this event.
-     * 
-     * @return HasMany
      */
     public function registrations(): HasMany
     {
@@ -78,7 +77,4 @@ class Event extends Model
     {
         return $this->registrations()->where('status', 'waitlisted')->first();
     }
-
-    
-
 }
