@@ -17,6 +17,16 @@ class EventController extends Controller
         return view('events.index', compact('events'));
     }
 
+    /**
+     * Display the admin dashboard.
+     */
+    public function dashboard()
+    {
+        $events = Event::paginate(10);
+
+        return view('admin.dashboard', compact('events'));
+    }
+
     // Display all events for admin
     public function adminIndex()
     {

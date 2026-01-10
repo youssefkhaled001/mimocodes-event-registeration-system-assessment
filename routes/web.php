@@ -3,39 +3,50 @@
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterationController;
-use App\Models\Event;
 use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', [EventController::class, 'index'])->name('index');
 
-// Admin Routes
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        $events = Event::paginate(perPage: 10);
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
 
-        return view('admin.dashboard', compact('events'));
-    })->name('dashboard');
-    Route::get('/admin/events', [EventController::class, 'adminIndex'])->name('admin.events');
-    Route::get('/admin/create', [EventController::class, 'create'])->name('create.event');
-    Route::post('/admin/create', [EventController::class, 'store'])->name('event.store');
+Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/admin/edit/{event}', [EventController::class, 'edit'])->name('edit.event');
-    Route::post('/admin/edit/{event}', [EventController::class, 'update'])->name('event.update');
+    // Dashboard
+    Route::get('/dashboard', [EventController::class, 'dashboard'])->name('dashboard');
 
-    Route::delete('/admin/delete/{event}', [EventController::class, 'destroy'])->name('delete.event');
+    // Event Management
+    Route::controller(EventController::class)->prefix('events')->name('event.')->group(function () {
+        Route::get('/', 'adminIndex')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{event}/edit', 'edit')->name('edit');
+        Route::put('/{event}', 'update')->name('update');
+        Route::delete('/{event}', 'destroy')->name('delete');
+    });
 
-    Route::get('/admin/registerations/{event}', [RegisterationController::class, 'index'])->name('view.event.registerations');
-    
-    Route::patch('/admin/registrations/{registeration}/payment-status', [RegisterationController::class, 'updatePaymentStatus'])->name('update.registration.payment');
-    
-    Route::patch('/admin/registrations/{registeration}/cancel', [RegisterationController::class, 'cancel'])->name('cancel.registration');
+    // Registration Management
+    Route::controller(RegisterationController::class)->prefix('registrations')->name('registrations.')->group(function () {
+        Route::get('/event/{event}', 'index')->name('index');
+        Route::patch('/{registeration}/payment-status', 'updatePaymentStatus')->name('update-payment');
+        Route::patch('/{registeration}/cancel', 'cancel')->name('cancel');
+    });
 
-    Route::get('/admin/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
-    Route::patch('/admin/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
-    Route::delete('/admin/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
+    // Profile Management
+    Route::controller(ProfileController::class)->prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', 'edit')->name('edit');
+        Route::patch('/', 'update')->name('update');
+        Route::delete('/', 'destroy')->name('destroy');
+    });
 });
 
 require __DIR__.'/auth.php';

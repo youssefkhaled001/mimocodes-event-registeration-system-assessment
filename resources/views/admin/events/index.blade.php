@@ -51,16 +51,16 @@
                         ])->toArray()" :actions="[
                             [
                                 'label' => 'Edit',
-                                'url' => 'edit.event'
+                                'url' => 'event.edit'
                             ],
                             [
                                 'label' => 'Delete',
-                                'url' => 'delete.event',
+                                'url' => 'event.delete',
                                 'method' => 'delete'
                             ],
                             [
                                 'label' => 'Registerations',
-                                'url' => 'view.event.registerations'
+                                'url' => 'registrations.index'
                             ]
                         ]" :ids="$events->pluck('id')->toArray()" />
 
