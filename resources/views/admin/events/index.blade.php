@@ -57,11 +57,15 @@
                                 'label' => 'Delete',
                                 'url' => 'delete.event',
                                 'method' => 'delete'
+                            ],
+                            [
+                                'label' => 'Registerations',
+                                'url' => 'view.event.registerations'
                             ]
                         ]" :ids="$events->pluck('id')->toArray()" />
 
                                     <div class="mt-6">
-                                        {{ $events->links() }}
+                                        {{ $events->onEachSide(0)->links() }}
                                     </div>
                     @else
                         <div class="text-center py-16">
