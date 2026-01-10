@@ -16,13 +16,17 @@
         </thead>
         <tbody>
             @foreach($rows as $index => $row)
-            <tr class="border-b border-white/[0.05] hover:bg-white/[0.02] transition-colors">
+            <tr class="border-b border-white/[0.05] hover:bg-white/[0.02] transition-colors"
+                @if(isset($dataAttributes[$index]))
+                    @foreach($dataAttributes[$index] as $key => $value)
+                        {{ $key }}="{{ $value }}"
+                    @endforeach
+                @endif>
                 @foreach($row as $cell)
                 <td class="px-6 py-4 text-white/80 whitespace-nowrap">
                     @if(is_array($cell))
                         <div class="px-2 py-1 capitalize text-xs rounded-full flex justify-center" style="background-color: {{ $cell['color'] }}; color: {{ $cell['text_color']??'white' }}">
-                            {{ $cell['text'] }}
-                        </div>
+                            {{ $cell['text'] }}</div>
                     @else
                         {{ $cell }}
                     @endif
@@ -31,20 +35,29 @@
                 @if(!empty($actions))
                 <td class="px-6 py-4 whitespace-nowrap">
                     @foreach($actions as $action)
-                    @php
-                        $url = route($action['url'], $ids[$index]);
-                        $method = $action['method'] ?? 'get';
-                    @endphp
-                    @if($method == 'get')
-                    <a href="{{ $url }}" class="text-cyan-400 hover:text-cyan-300 mr-3 underline transition-colors">
-                        {{ $action['label'] }}
-                    </a>
+                    @if(isset($action['onclick']))
+                        <button type="button" 
+                                data-action="{{ $action['onclick'] }}"
+                                data-id="{{ $ids[$index] }}"
+                                class="text-cyan-400 hover:text-cyan-300 mr-3 bg-transparent border-0 cursor-pointer underline transition-colors">
+                            {{ $action['label'] }}
+                        </button>
                     @else
-                    <button type="button" 
-                            onclick="openDeleteModal('{{ $url }}', '{{ $method }}')" 
-                            class="text-red-400 hover:text-red-300 mr-3 bg-transparent border-0 cursor-pointer underline transition-colors">
-                        {{ $action['label'] }}
-                    </button>
+                        @php
+                            $url = route($action['url'], $ids[$index]);
+                            $method = $action['method'] ?? 'get';
+                        @endphp
+                        @if($method == 'get')
+                        <a href="{{ $url }}" class="text-cyan-400 hover:text-cyan-300 mr-3 underline transition-colors">
+                            {{ $action['label'] }}
+                        </a>
+                        @else
+                        <button type="button" 
+                                onclick="openDeleteModal('{{ $url }}', '{{ $method }}')" 
+                                class="text-red-400 hover:text-red-300 mr-3 bg-transparent border-0 cursor-pointer underline transition-colors">
+                            {{ $action['label'] }}
+                        </button>
+                        @endif
                     @endif
                     @endforeach
                 </td>

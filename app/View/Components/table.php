@@ -11,7 +11,13 @@ class table extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(public array $columns, public array $rows, public array $ids = [], public array $actions = [])
+    public function __construct(
+        public array $columns, 
+        public array $rows, 
+        public array $ids = [], 
+        public array $actions = [],
+        public array $dataAttributes = []
+    )
     {
         //
     }
