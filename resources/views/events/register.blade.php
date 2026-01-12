@@ -1,4 +1,43 @@
 <x-public-layout>
+    <div class="flex justify-center">
+             <!-- Success Message (Hidden by default) -->
+            @if (session('success'))
+            <div id="successMessage"
+                class="w-full max-w-7xl m-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-6 animate-fadeInUp">
+                <div class="flex items-start gap-4">
+                    <div
+                        class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-2xl flex-shrink-0">
+                        ✓
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-2xl font-bold text-emerald-400 mb-2">Registration Successful!</h3>
+                        <p class="text-white/70 text-base leading-relaxed">
+                            {{ session('success') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            @endif
+            
+            <!-- Error Message (Hidden by default) -->
+            @if (session('error'))
+            <div id="errorMessage"
+                class="w-full max-w-7xl m-3 bg-red-500/10 border border-red-500/30 rounded-xl p-6 animate-fadeInUp">
+                <div class="flex items-start gap-4">
+                    <div
+                        class="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center text-2xl flex-shrink-0">
+                        ⚠
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-2xl font-bold text-red-400 mb-2">Registration Failed</h3>
+                        <p class="text-white/70 text-base leading-relaxed" id="errorText">
+                            {{ session('error') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            @endif
+    </div>
     <div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-16">
         <div class="w-full max-w-7xl">
             <!-- Back Button -->
@@ -23,7 +62,7 @@
                     </div>
 
                     @if(isset($event))
-                       <x-event-content :event="$event" />
+                        <x-event-content :event="$event" />
                     @else
                         <!-- No Event Selected -->
                         <div class="text-center py-12">
@@ -59,28 +98,24 @@
                     @if(isset($event))
                         <!-- Tab Navigation -->
                         <div class="flex gap-2 mb-8 p-1 bg-white/[0.02] border border-white/[0.08] rounded-lg">
-                            <button 
-                                type="button"
-                                onclick="switchTab('new')"
-                                id="newTab"
+                            <button type="button" onclick="switchTab('new')" id="newTab"
                                 class="tab-button flex-1 px-6 py-3 rounded-md text-sm font-medium tracking-wide transition-all duration-300 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 text-white shadow-[0_0_20px_rgba(0,255,255,0.15)]">
                                 <span class="flex items-center justify-center gap-2">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                                     </svg>
-                                    New Registration
+                                    New User
                                 </span>
                             </button>
-                            <button 
-                                type="button"
-                                onclick="switchTab('existing')"
-                                id="existingTab"
+                            <button type="button" onclick="switchTab('existing')" id="existingTab"
                                 class="tab-button flex-1 px-6 py-3 rounded-md text-sm font-medium tracking-wide transition-all duration-300 text-white/60 hover:text-white/80 hover:bg-white/[0.03]">
                                 <span class="flex items-center justify-center gap-2">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
-                                    Already Registered
+                                    Existing User
                                 </span>
                             </button>
                         </div>
@@ -99,6 +134,11 @@
                                 <input type="text" id="new_name" name="name" required placeholder="John Doe"
                                     class="input-field" value="{{ old('name') }}">
                                 <p class="text-xs text-white/40 mt-2">Enter your full legal name</p>
+                                <p class="text-red-600 text-sm">
+                                    @error("name")
+                                        {{ $message }}
+                                    @enderror
+                                </p>
                             </div>
 
                             <!-- Email Field -->
@@ -109,16 +149,26 @@
                                 <input type="email" id="new_email" name="email" required placeholder="john@example.com"
                                     class="input-field" value="{{ old('email') }}">
                                 <p class="text-xs text-white/40 mt-2">We'll send confirmation to this email</p>
+                                <p class="text-red-600 text-sm">
+                                    @error("email")
+                                        {{ $message }}
+                                    @enderror
+                                </p>
                             </div>
 
                             <!-- Phone Field -->
                             <div class="animate-fadeInUp delay-350">
                                 <label for="new_phone" class="block text-sm font-medium text-white/70 mb-2 tracking-wide">
-                                    Phone Number <span class="text-red-400">*</span>
+                                    Phone Number
                                 </label>
-                                <input type="tel" id="new_phone" name="phone" required placeholder="+1 (555) 123-4567"
-                                    class="input-field" value="{{ old('phone') }}">
+                                <input type="phone" id="new_phone" name="phone" placeholder="+20123456789" class="input-field"
+                                    value="{{ old('phone') }}">
                                 <p class="text-xs text-white/40 mt-2">Include country code</p>
+                                <p class="text-red-600 text-sm">
+                                    @error("phone")
+                                        Please enter a valid phone number
+                                    @enderror
+                                </p>
                             </div>
 
                             <!-- Company Field (Optional) -->
@@ -127,7 +177,8 @@
                                     Company / Organization
                                     <span class="text-white/40 text-xs font-normal">(Optional)</span>
                                 </label>
-                                <input type="text" id="new_company" name="company" placeholder="Acme Inc." class="input-field" value="{{ old('company') }}">
+                                <input type="text" id="new_company" name="company" placeholder="Acme Inc."
+                                    class="input-field" value="{{ old('company') }}">
                             </div>
 
                             <!-- Terms & Conditions -->
@@ -156,7 +207,8 @@
                         </form>
 
                         <!-- Existing User Form (Hidden by default) -->
-                        <form id="existingUserForm" method="POST" action="{{ route('register.store') }}" class="space-y-6 hidden">
+                        <form id="existingUserForm" method="POST" action="{{ route('register.store') }}"
+                            class="space-y-6 hidden">
                             @csrf
                             <input type="hidden" name="event_id" value="{{ $event->id }}">
                             <input type="hidden" name="registration_type" value="existing">
@@ -164,13 +216,16 @@
                             <!-- Info Message -->
                             <div class="bg-cyan-500/10 border border-cyan-500/20 rounded-lg p-4 animate-fadeInUp">
                                 <div class="flex items-start gap-3">
-                                    <svg class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    <svg class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     <div>
                                         <p class="text-cyan-400 text-sm font-medium mb-1">Already have an account?</p>
                                         <p class="text-white/60 text-xs leading-relaxed">
-                                            Simply enter your registered email address. We'll use your existing information to complete the registration.
+                                            Simply enter your registered email address. We'll use your existing information
+                                            to complete the registration.
                                         </p>
                                     </div>
                                 </div>
@@ -178,12 +233,18 @@
 
                             <!-- Email Field -->
                             <div class="animate-fadeInUp delay-250">
-                                <label for="existing_email" class="block text-sm font-medium text-white/70 mb-2 tracking-wide">
+                                <label for="existing_email"
+                                    class="block text-sm font-medium text-white/70 mb-2 tracking-wide">
                                     Email Address <span class="text-red-400">*</span>
                                 </label>
                                 <input type="email" id="existing_email" name="email" required placeholder="john@example.com"
                                     class="input-field" value="{{ old('email') }}">
                                 <p class="text-xs text-white/40 mt-2">Enter the email you previously registered with</p>
+                                <p class="text-red-600 text-sm">
+                                    @error("email")
+                                        {{ $message }}
+                                    @enderror
+                                </p>
                             </div>
 
                             <!-- Terms & Conditions -->
@@ -230,40 +291,7 @@
                 </div>
             </div>
 
-            <!-- Success Message (Hidden by default) -->
-            <div id="successMessage"
-                class="hidden mt-8 bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-6 animate-fadeInUp">
-                <div class="flex items-start gap-4">
-                    <div
-                        class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-2xl flex-shrink-0">
-                        ✓
-                    </div>
-                    <div>
-                        <h3 class="font-serif text-2xl font-bold text-emerald-400 mb-2">Registration Successful!</h3>
-                        <p class="text-white/70 text-base leading-relaxed">
-                            Thank you for registering. We've sent a confirmation email to your inbox with all the event
-                            details.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Error Message (Hidden by default) -->
-            <div id="errorMessage"
-                class="hidden mt-8 bg-red-500/10 border border-red-500/30 rounded-xl p-6 animate-fadeInUp">
-                <div class="flex items-start gap-4">
-                    <div
-                        class="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center text-2xl flex-shrink-0">
-                        ⚠
-                    </div>
-                    <div>
-                        <h3 class="font-serif text-2xl font-bold text-red-400 mb-2">Registration Failed</h3>
-                        <p class="text-white/70 text-base leading-relaxed" id="errorText">
-                            Something went wrong. Please try again or contact support.
-                        </p>
-                    </div>
-                </div>
-            </div>
+           
         </div>
     </div>
 
@@ -280,11 +308,11 @@
                 newTab.classList.add('bg-gradient-to-r', 'from-cyan-500/20', 'to-blue-500/20', 'border', 'border-cyan-500/30', 'shadow-[0_0_20px_rgba(0,255,255,0.15)]');
                 newTab.classList.remove('text-white/60', 'hover:text-white/80', 'hover:bg-white/[0.03]');
                 newTab.classList.add('text-white');
-                
+
                 // Deactivate existing tab
                 existingTab.classList.remove('bg-gradient-to-r', 'from-cyan-500/20', 'to-blue-500/20', 'border', 'border-cyan-500/30', 'shadow-[0_0_20px_rgba(0,255,255,0.15)]', 'text-white');
                 existingTab.classList.add('text-white/60', 'hover:text-white/80', 'hover:bg-white/[0.03]');
-                
+
                 // Show/hide forms
                 newUserForm.classList.remove('hidden');
                 existingUserForm.classList.add('hidden');
@@ -293,16 +321,31 @@
                 existingTab.classList.add('bg-gradient-to-r', 'from-cyan-500/20', 'to-blue-500/20', 'border', 'border-cyan-500/30', 'shadow-[0_0_20px_rgba(0,255,255,0.15)]');
                 existingTab.classList.remove('text-white/60', 'hover:text-white/80', 'hover:bg-white/[0.03]');
                 existingTab.classList.add('text-white');
-                
+
                 // Deactivate new tab
                 newTab.classList.remove('bg-gradient-to-r', 'from-cyan-500/20', 'to-blue-500/20', 'border', 'border-cyan-500/30', 'shadow-[0_0_20px_rgba(0,255,255,0.15)]', 'text-white');
                 newTab.classList.add('text-white/60', 'hover:text-white/80', 'hover:bg-white/[0.03]');
-                
+
                 // Show/hide forms
                 existingUserForm.classList.remove('hidden');
                 newUserForm.classList.add('hidden');
             }
         }
+
+        // Initialize: Restore tab state after validation errors
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if there are validation errors or old input
+            const registrationType = '{{ old("registration_type") }}';
+                    
+            // Determine which tab to show
+            if (registrationType === 'existing') {
+                switchTab('existing');
+            } else if (registrationType === 'new') {
+                switchTab('new');
+            }
+            // If no errors and no old input, default to 'new' tab (already set in HTML)
+        });
+
 
         // Form submission handling for new user form
         document.getElementById('newUserForm')?.addEventListener('submit', function (e) {
@@ -381,20 +424,6 @@
             });
         });
 
-        // Phone number formatting (basic)
-        const phoneInput = document.getElementById('new_phone');
-        phoneInput?.addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 0) {
-                // Basic formatting - you can enhance this
-                if (value.length <= 3) {
-                    e.target.value = value;
-                } else if (value.length <= 6) {
-                    e.target.value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
-                } else {
-                    e.target.value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
-                }
-            }
-        });
-    </script>    
+        
+    </script>
 </x-public-layout>
