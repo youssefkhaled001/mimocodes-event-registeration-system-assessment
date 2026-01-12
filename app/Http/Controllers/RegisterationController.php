@@ -25,7 +25,14 @@ class RegisterationController extends Controller
      */
     public function create()
     {
-        //
+        $event = null;
+
+        // Get event ID from query parameter
+        if (request()->has('id')) {
+            $event = Event::find(request()->id);
+        }
+
+        return view('events.register', compact('event'));
     }
 
     /**
@@ -33,7 +40,19 @@ class RegisterationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'company' => 'required',
+            'event_id' => 'required',
+        ]);
+
+        // Return Error Messages
+        return redirect()->back()->withErrors($validatedData)->withInput();
+
+        return redirect()->route('index')->with('success', 'Registered successfully.');
     }
 
     /**
@@ -74,7 +93,7 @@ class RegisterationController extends Controller
     public function updatePaymentStatus(Request $request, Registeration $registeration)
     {
         $request->validate([
-            'payment_status' => 'required|in:pending,paid,refunded'
+            'payment_status' => 'required|in:pending,paid,refunded',
         ]);
 
         $newPaymentStatus = $request->payment_status;
@@ -109,12 +128,12 @@ class RegisterationController extends Controller
         }
 
         $registeration->status = 'cancelled';
-        
+
         // If the registration was paid, set payment status to refunded
         if ($registeration->payment_status === 'paid') {
             $registeration->payment_status = 'refunded';
         }
-        
+
         $registeration->save();
 
         return back()->with('success', 'Registration cancelled successfully.');
