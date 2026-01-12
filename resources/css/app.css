@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    /* Custom input field styles - Mimocodes aesthetic */
+    .input-field {
+        @apply w-full px-5 py-4 bg-white/[0.03] border border-white/[0.1] rounded-lg text-white placeholder-white/40;
+        @apply transition-all duration-300 focus:outline-none focus:bg-white/[0.05] focus:border-cyan-500/50;
+        @apply focus:shadow-[0_0_20px_rgba(0,255,255,0.1)];
+    }
+
+    .input-field:hover {
+        @apply border-white/[0.15] bg-white/[0.04];
+    }
+
+    /* Custom checkbox styles - Mimocodes aesthetic */
+    .checkbox-field {
+        @apply w-5 h-5 rounded border-white/[0.1] bg-white/[0.03] text-cyan-500 transition-all duration-300 cursor-pointer;
+        @apply focus:ring-2 focus:ring-cyan-500/50 focus:ring-offset-0 focus:bg-white/[0.05] focus:border-cyan-500/50;
+        @apply checked:bg-gradient-to-br checked:from-cyan-500/30 checked:to-blue-500/30 checked:border-cyan-500/50;
+        @apply checked:shadow-[0_0_15px_rgba(0,255,255,0.2)];
+    }
+
+    .checkbox-field:hover {
+        @apply border-white/[0.15] bg-white/[0.04];
+    }
+}
+
 @layer base {
     /* Custom Scrollbar - Global */
     ::-webkit-scrollbar {

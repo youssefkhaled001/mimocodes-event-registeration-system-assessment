@@ -116,15 +116,6 @@
             animation-delay: 0.5s;
         }
 
-        /* Custom input styles */
-        .input-field {
-            @apply w-full px-5 py-4 bg-white/[0.03] border border-white/[0.1] rounded-lg text-white placeholder-white/40 transition-all duration-300 focus:outline-none focus:bg-white/[0.05] focus:border-cyan-500/50 focus:shadow-[0_0_20px_rgba(0, 255, 255, 0.1)];
-        }
-
-        .input-field:hover {
-            @apply border-white/[0.15] bg-white/[0.04];
-        }
-
         /* Loading animation */
         .btn-loading {
             position: relative;
