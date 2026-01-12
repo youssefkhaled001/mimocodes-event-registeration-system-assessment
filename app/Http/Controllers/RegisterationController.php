@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendee;
 use App\Models\Event;
 use App\Models\Registeration;
+use App\Services\RegisterationService;
 use Illuminate\Http\Request;
+use Propaganistas\LaravelPhone\Rules\Phone;
 
 class RegisterationController extends Controller
 {
@@ -40,19 +43,71 @@ class RegisterationController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'company' => 'required',
-            'event_id' => 'required',
-        ]);
 
-        // Return Error Messages
-        return redirect()->back()->withErrors($validatedData)->withInput();
+        if (request()->get('registration_type') == 'new') {
+            $validatedData = $request->validate([
+                'name' => 'required',
+                'email' => 'required|email',
+                'phone' => ['nullable', new Phone],
+                'company' => 'nullable',
+                'event_id' => 'required',
+            ]);
+            // Make sure this isn't an existing user
+            if (Attendee::where('email', $validatedData['email'])->exists()) {
+                return redirect()->back()->withErrors(['email' => 'Email already exists, Select Existing User to register.'])->withInput();
+            }
+            // Make sure the phone number (if provided) isn't associated to an existing user
+            if (Attendee::where('phone', $validatedData['phone'])->exists()) {
+                return redirect()->back()->withErrors(['phone' => 'Phone already exists, Select Existing User to register.'])->withInput();
+            }
 
-        return redirect()->route('index')->with('success', 'Registered successfully.');
+            // Create Attendee
+            $attendee = Attendee::create([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'phone' => $validatedData['phone'],
+                'company' => $validatedData['company'],
+            ]);
+
+        } else {
+            $validatedData = $request->validate([
+                'email' => 'required',
+                'event_id' => 'required',
+            ]);
+            // Find Attendee
+            $attendee = Attendee::where('email', $validatedData['email'])->first();
+            // Make sure this is an existing user
+            if (! $attendee) {
+                return redirect()->back()->withErrors(['email' => 'Email does not exist, Select New User to register.'])->withInput();
+            }
+        }
+
+        // Try to register the attendee for the event
+        try {
+            $registeration = RegisterationService::register($attendee, $validatedData['event_id']);
+
+            // Check registration status and show appropriate message
+            if ($registeration->status == 'waitlisted') {
+                return redirect()->back()->with('success', 'Registered successfully. You are on the waitlist.');
+            } else {
+                return redirect()->back()->with('success', 'Registered successfully. Your spot is confirmed!');
+            }
+        } catch (\Exception $e) {
+            // Handle specific exceptions from the service
+            $errorMessage = $e->getMessage();
+
+            // Provide user-friendly error messages
+            if (str_contains($errorMessage, 'not published')) {
+                return redirect()->back()->with('error', 'This event is not currently available for registration.')->withInput();
+            } elseif (str_contains($errorMessage, 'already registered')) {
+                return redirect()->back()->with('error', 'You are already registered for this event.')->withInput();
+            } elseif (str_contains($errorMessage, 'already started')) {
+                return redirect()->back()->with('error', 'This event has already started.')->withInput();
+            } else {
+                return redirect()->back()->with('error', 'Something went wrong. Please try again later.')->withInput();
+            }
+        }
+
     }
 
     /**

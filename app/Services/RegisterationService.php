@@ -21,7 +21,10 @@ class RegisterationService
             if ($event->status !== 'published') {
                 throw new \Exception('Event is not published');
             }
-
+            // Check if Event is already started
+            if ($event->date_time < now()) {
+                throw new \Exception('Event is already started');
+            }
             // Calculate Capacities
             $maxCapacity = $event->capacity;
             $currentCapacity = Registeration::where('event_id', $event_id)
@@ -54,7 +57,7 @@ class RegisterationService
                 ]);
             }
 
-            return $registeration != null;
+            return $registeration;
         });
     }
 
