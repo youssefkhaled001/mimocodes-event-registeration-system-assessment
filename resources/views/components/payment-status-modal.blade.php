@@ -83,7 +83,7 @@
         const warning = document.getElementById('paymentWarning');
 
         // Update form action
-        form.action = `/admin/registrations/${registrationId}/payment-status`;
+        form.action = `/admin/registerations/${registrationId}/payment-status`;
 
         // Display current status
         statusDisplay.innerHTML = `

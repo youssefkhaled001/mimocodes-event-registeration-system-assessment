@@ -60,7 +60,7 @@
                             ],
                             [
                                 'label' => 'Registerations',
-                                'url' => 'registrations.index'
+                                'url' => 'registerations.index'
                             ]
                         ]" :ids="$events->pluck('id')->toArray()" />
 

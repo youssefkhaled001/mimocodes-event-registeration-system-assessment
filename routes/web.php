@@ -36,7 +36,7 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     });
 
     // Registration Management
-    Route::controller(RegisterationController::class)->prefix('registrations')->name('registrations.')->group(function () {
+    Route::controller(RegisterationController::class)->prefix('registerations')->name('registerations.')->group(function () {
         Route::get('/event/{event}', 'index')->name('index');
         Route::patch('/{registeration}/payment-status', 'updatePaymentStatus')->name('update-payment');
         Route::patch('/{registeration}/cancel', 'cancel')->name('cancel');

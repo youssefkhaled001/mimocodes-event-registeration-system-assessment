@@ -72,13 +72,13 @@
                             ],
                             [
                                 'label' => 'Cancel',
-                                'url' => 'registrations.cancel',
+                                'url' => 'registerations.cancel',
                                 'method' => 'patch'
                             ]
                         ]" :data-attributes="$registerations->map(fn($reg) => [
-                                                    'data-status' => $reg->status,
-                                                    'data-payment-status' => $reg->payment_status
-                                                ])->toArray()" />
+                                                                    'data-status' => $reg->status,
+                                                                    'data-payment-status' => $reg->payment_status
+                                                                ])->toArray()" />
 
                                     <div class="mt-6">
                                         {{ $registerations->onEachSide(0)->links() }}
