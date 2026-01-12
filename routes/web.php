@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [EventController::class, 'index'])->name('index');
-
+Route::get('/register', [RegisterationController::class, 'create'])->name('register');
+Route::post('/register', [RegisterationController::class, 'store'])->name('register.store');
 /*
 |--------------------------------------------------------------------------
 | Admin Routes
