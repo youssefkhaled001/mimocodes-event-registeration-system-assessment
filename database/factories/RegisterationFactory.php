@@ -39,12 +39,17 @@ class RegisterationFactory extends Factory
             $status = 'cancelled';
         }
 
+        // Generate a random date within the last 30 days for better chart visualization
+        $randomDate = fake()->dateTimeBetween('-30 days', 'now');
+
         return [
             'event_id' => $eventId,
             'attendee_id' => fake()->randomElement($availableAttendeeIds),
-            'registration_date' => fake()->dateTimeBetween('-1 week', 'now'),
+            'registration_date' => $randomDate,
             'status' => $status,
             'payment_status' => fake()->randomElement(['pending', 'paid', 'refunded']),
+            'created_at' => $randomDate,
+            'updated_at' => $randomDate,  // This is used for revenue tracking
         ];
     }
 }
