@@ -27,16 +27,16 @@ class UpdateCompletedEvents extends Command
      */
     public function handle()
     {
+        \Log::info('Scheduled UpdateCompletedEvents command executed');
         $expiredEvents = Event::where('status', 'published')
             ->where('date_time', '<', Carbon::now()->subHour())->count();
-
         $status = Event::where('status', 'published')
             ->where('date_time', '<', Carbon::now()->subHour())
             ->update(['status' => 'completed']);
         if ($expiredEvents > 0 && $status) {
-            $this->info("Successfully updated {$expiredEvents} events to completed.");
+            \Log::info("Successfully updated {$expiredEvents} events to completed.");
         } else {
-            $this->info('No events to update.');
+            \Log::info('No events to update.');
         }
     }
 }
