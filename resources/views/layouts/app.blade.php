@@ -15,6 +15,11 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
 
+    <!-- Bladewind UI -->
+    <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -64,9 +69,30 @@
 
     <div class="relative z-10 min-h-screen">
         @include('layouts.navigation')
-
+        <div class="flex justify-center mt-5">
+            <!-- Success Message -->
+            @if(session('success'))
+                <div
+                    class="w-full max-w-7xl p-4 bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 rounded-lg backdrop-blur-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(0,255,255,0.5)]"></div>
+                        {{ session('success') }}
+                    </div>
+                </div>
+            @endif
+            <!-- Error Message -->
+            @if(session('error'))
+                <div
+                    class="w-full max-w-7xl p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg backdrop-blur-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-red-400 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
+                        {{ session('error') }}
+                    </div>
+                </div>
+            @endif
+        </div>
         <!-- Page Content -->
-        <main>
+        <main class="animate-fade-in-up">
             {{ $slot }}
         </main>
     </div>

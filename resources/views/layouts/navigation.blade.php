@@ -13,14 +13,19 @@
                     </a>
                 </div>
             </div>
+            <div class="flex justify-center items-center gap-5">
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    Dashboard
+                </x-nav-link>
+                <x-nav-link :href="route('event.index')" :active="request()->routeIs('event.index')">
+                    Events
+                </x-nav-link>
+                <x-nav-link :href="route('event.create')" :active="request()->routeIs('event.create')">
+                    New Event
+                </x-nav-link>
+            </div>
 
             <div class="flex items-center gap-4">
-                <!-- New Event Button -->
-                <a href="/admin/create"
-                    class="px-6 py-2.5 bg-transparent border border-white/20 rounded-md text-white text-sm font-medium tracking-wide transition-all duration-300 hover:bg-cyan-500/10 hover:border-cyan-500/50 hover:text-cyan-400 hover:shadow-[0_0_20px_rgba(0,255,255,0.15)]">
-                    + New Event
-                </a>
-
                 <!-- Settings Dropdown -->
                 <div class="hidden sm:flex sm:items-center">
                     <x-dropdown align="right" width="48">

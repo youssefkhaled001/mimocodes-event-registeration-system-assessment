@@ -155,6 +155,28 @@
         <div class="absolute top-[80%] left-[50%] w-[700px] h-[700px] bg-sky-500/[0.05] rounded-full blur-[110px]">
         </div>
     </div>
+    <div class="flex justify-center mt-5">
+        <!-- Success Message -->
+        @if(session('success'))
+            <div
+                class="w-full max-w-7xl p-4 bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 rounded-lg backdrop-blur-sm">
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(0,255,255,0.5)]"></div>
+                    {{ session('success') }}
+                </div>
+            </div>
+        @endif
+        <!-- Error Message -->
+        @if(session('error'))
+            <div
+                class="w-full max-w-7xl p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg backdrop-blur-sm">
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full bg-red-400 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
+                    {{ session('error') }}
+                </div>
+            </div>
+        @endif
+    </div>
     <main>
         {{ $slot }}
     </main>
