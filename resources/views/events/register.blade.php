@@ -1,44 +1,6 @@
 <x-public-layout>
-    <div class="flex justify-center">
-             <!-- Success Message (Hidden by default) -->
-            @if (session('success'))
-            <div id="successMessage"
-                class="w-full max-w-7xl m-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-6 animate-fadeInUp">
-                <div class="flex items-start gap-4">
-                    <div
-                        class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-2xl flex-shrink-0">
-                        ✓
-                    </div>
-                    <div>
-                        <h3 class="font-serif text-2xl font-bold text-emerald-400 mb-2">Registration Successful!</h3>
-                        <p class="text-white/70 text-base leading-relaxed">
-                            {{ session('success') }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            @endif
-            
-            <!-- Error Message (Hidden by default) -->
-            @if (session('error'))
-            <div id="errorMessage"
-                class="w-full max-w-7xl m-3 bg-red-500/10 border border-red-500/30 rounded-xl p-6 animate-fadeInUp">
-                <div class="flex items-start gap-4">
-                    <div
-                        class="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center text-2xl flex-shrink-0">
-                        ⚠
-                    </div>
-                    <div>
-                        <h3 class="font-serif text-2xl font-bold text-red-400 mb-2">Registration Failed</h3>
-                        <p class="text-white/70 text-base leading-relaxed" id="errorText">
-                            {{ session('error') }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            @endif
-    </div>
-    <div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-16">
+
+    <div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-7">
         <div class="w-full max-w-7xl">
             <!-- Back Button -->
             <a href="{{ route('index') }}"
@@ -161,8 +123,8 @@
                                 <label for="new_phone" class="block text-sm font-medium text-white/70 mb-2 tracking-wide">
                                     Phone Number
                                 </label>
-                                <input type="phone" id="new_phone" name="phone" placeholder="+20123456789" class="input-field"
-                                    value="{{ old('phone') }}">
+                                <input type="phone" id="new_phone" name="phone" placeholder="+20123456789"
+                                    class="input-field" value="{{ old('phone') }}">
                                 <p class="text-xs text-white/40 mt-2">Include country code</p>
                                 <p class="text-red-600 text-sm">
                                     @error("phone")
@@ -291,7 +253,7 @@
                 </div>
             </div>
 
-           
+
         </div>
     </div>
 
@@ -333,10 +295,10 @@
         }
 
         // Initialize: Restore tab state after validation errors
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Check if there are validation errors or old input
             const registrationType = '{{ old("registration_type") }}';
-                    
+
             // Determine which tab to show
             if (registrationType === 'existing') {
                 switchTab('existing');
@@ -424,6 +386,6 @@
             });
         });
 
-        
+
     </script>
 </x-public-layout>
