@@ -12,15 +12,33 @@ use Propaganistas\LaravelPhone\Rules\Phone;
 class RegisterationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of registrations with optional filters
+     * Supports filtering by status and payment_status via query parameters
      */
-    public function index(Event $event)
+    public function index(Event $event, Request $request)
     {
-        $registerations = Registeration::where('event_id', $event->id)
-            ->with('attendee')
-            ->paginate(15);
+        // Get filter values from query parameters
+        $status = $request->get('status', 'all');
+        $paymentStatus = $request->get('payment_status', 'all');
 
-        return view('admin.registerations.index', compact('registerations', 'event'));
+        // Build the query
+        $query = Registeration::where('event_id', $event->id)
+            ->with('attendee');
+
+        // Apply status filter if not 'all'
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        // Apply payment status filter if not 'all'
+        if ($paymentStatus !== 'all') {
+            $query->where('payment_status', $paymentStatus);
+        }
+
+        // Get paginated results
+        $registerations = $query->paginate(15);
+
+        return view('admin.registerations.index', compact('registerations', 'event', 'status', 'paymentStatus'));
     }
 
     /**
@@ -58,7 +76,7 @@ class RegisterationController extends Controller
             }
             // Make sure the phone number (if provided) isn't associated to an existing user
             if (Attendee::where('phone', $validatedData['phone'])->exists()) {
-                return redirect()->back()->withErrors(['phone' => 'Phone already exists, Select Existing User to register.'])->withInput();
+                return redirect()->back()->with(['error' => 'Phone already exists, Select Existing User to register.'])->withInput();
             }
 
             // Create Attendee
