@@ -1,51 +1,151 @@
 <x-app-layout>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-semibold">Edit Event</h2>
+    <div class="py-7">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Page Header -->
+            <div class="mb-8 animate-fade-in-up">
+                <h1 class="font-serif text-4xl font-bold text-white mb-2">Edit Event</h1>
+                <p class="text-white/60 text-lg">Update the details for "{{ $event->title }}"</p>
+            </div>
 
-                        <!-- Delete Event Button -->
-                        <button type="button"
-                            onclick="openModaldeleteEventModal('{{ route('delete.event', $event->id) }}', 'DELETE')"
-                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                            Delete Event
-                        </button>
+            <!-- Form Card -->
+            <div
+                class="animate-fade-in-up bg-white/[0.02] backdrop-blur-sm border border-white/[0.08] rounded-2xl p-8 shadow-xl">
+                <form action="{{ route('event.update', $event->id) }}" method="POST" class="space-y-6">
+                    @csrf
+                    @method('POST')
+
+                    <!-- Title -->
+                    <div class="group">
+                        <label for="title" class="block text-sm font-medium text-white/80 mb-2">
+                            Event Title <span class="text-cyan-400">*</span>
+                        </label>
+                        <input type="text" name="title" id="title" value="{{ old('title', $event->title) }}" required
+                            class="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-200 @error('title') border-red-500 @enderror">
+                        @error('title')
+                            <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                    <!-- Edit Form -->
-                    <form method="POST" action="{{ route('event.update', $event->id) }}">
-                        @csrf
-                        @method('POST')
+                    <!-- Description -->
+                    <div class="group">
+                        <label for="description" class="block text-sm font-medium text-white/80 mb-2">
+                            Description <span class="text-cyan-400">*</span>
+                        </label>
+                        <textarea name="description" id="description" rows="5" required
+                            class="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-200 resize-none @error('description') border-red-500 @enderror">{{ old('description', $event->description) }}</textarea>
+                        @error('description')
+                            <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                        <!-- Form fields would go here -->
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Event Title</label>
-                            <input type="text" name="title" value="{{ $event->title }}"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <!-- Date & Time and Location Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Date & Time -->
+                        <div class="group">
+                            <label for="date_time" class="block text-sm font-medium text-white/80 mb-2">
+                                Date & Time <span class="text-cyan-400">*</span>
+                            </label>
+                            <input type="datetime-local" name="date_time" id="date_time"
+                                value="{{ old('date_time', $event->date_time->format('Y-m-d\TH:i')) }}" required
+                                class="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-200 @error('date_time') border-red-500 @enderror">
+                            @error('date_time')
+                                <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                            @enderror
                         </div>
 
-                        <!-- More form fields... -->
+                        <!-- Location -->
+                        <div class="group">
+                            <label for="location" class="block text-sm font-medium text-white/80 mb-2">
+                                Location <span class="text-cyan-400">*</span>
+                            </label>
+                            <input type="text" name="location" id="location"
+                                value="{{ old('location', $event->location) }}" required
+                                class="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-200 @error('location') border-red-500 @enderror">
+                            @error('location')
+                                <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
 
-                        <div class="flex gap-3">
-                            <a href="{{ route('dashboard') }}"
-                                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">
-                                Cancel
+                    <!-- Capacity and Price Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Capacity -->
+                        <div class="group">
+                            <label for="capacity" class="block text-sm font-medium text-white/80 mb-2">
+                                Capacity <span class="text-cyan-400">*</span>
+                            </label>
+                            <input type="number" name="capacity" id="capacity"
+                                value="{{ old('capacity', $event->capacity) }}" min="1" required
+                                class="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-200 @error('capacity') border-red-500 @enderror">
+                            @error('capacity')
+                                <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Price -->
+                        <div class="group">
+                            <label for="price" class="block text-sm font-medium text-white/80 mb-2">
+                                Price (Optional)
+                            </label>
+                            <div class="relative">
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 font-medium">$</span>
+                                <input type="number" name="price" id="price" value="{{ old('price', $event->price) }}"
+                                    min="0" step="0.01" placeholder="0.00"
+                                    class="w-full pl-8 pr-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-200 @error('price') border-red-500 @enderror">
+                            </div>
+                            @error('price')
+                                <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="group">
+                        <label for="status" class="block text-sm font-medium text-white/80 mb-2">
+                            Status <span class="text-cyan-400">*</span>
+                        </label>
+                        <select name="status" id="status" required
+                            class="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-200 @error('status') border-red-500 @enderror">
+                            <option value="draft" {{ old('status', $event->status) == 'draft' ? 'selected' : '' }}
+                                class="bg-gray-900 text-white">Draft</option>
+                            <option value="published" {{ old('status', $event->status) == 'published' ? 'selected' : '' }}
+                                class="bg-gray-900 text-white">Published</option>
+                        </select>
+                        @error('status')
+                            <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="flex items-center justify-between gap-4 pt-6 border-t border-white/[0.08]">
+                        <button type="button"
+                            onclick="openDeleteModal('{{ route('event.delete', $event->id) }}', 'DELETE')"
+                            class="px-6 py-3 bg-red-500/10 border border-red-500/30 text-red-400 font-medium rounded-lg transition-all duration-300 hover:bg-red-500/20 hover:border-red-500/50">
+                            Cancel Event
+                        </button>
+
+                        <div class="flex gap-4">
+                            <a href="{{ route('event.index') }}"
+                                class="px-6 py-3 text-white/70 hover:text-white font-medium transition-colors duration-200">
+                                Back
                             </a>
                             <button type="submit"
-                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                                Update Event
+                                class="group relative px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:scale-105">
+                                <span class="relative z-10">Update Event</span>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                </div>
                             </button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Include the reusable delete modal with custom ID and messages -->
-    <x-delete-modal modal-id="deleteEventModal" title="Delete Event"
-        message="Are you sure you want to delete this event? All registrations will be lost. This action cannot be undone."
-        confirm-text="Delete Event" />
+    <!-- Delete Modal -->
+    <x-delete-modal modal-id="deleteModal" title="Cancel Event"
+        message="Are you sure you want to cancel this event? This will mark it as cancelled and notify all registrants."
+        confirm-text="Cancel Event" />
 </x-app-layout>

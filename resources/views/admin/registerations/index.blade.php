@@ -1,25 +1,6 @@
 <x-app-layout>
-    <div class="py-16 px-8">
+    <div class="py-7 px-8">
         <div class="max-w-7xl mx-auto">
-            <!-- Success Message -->
-            @if(session('success'))
-                <div class="mb-8 p-4 bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 rounded-lg backdrop-blur-sm">
-                    <div class="flex items-center gap-3">
-                        <div class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(0,255,255,0.5)]"></div>
-                        {{ session('success') }}
-                    </div>
-                </div>
-            @endif
-
-            <!-- Error Message -->
-            @if(session('error'))
-                <div class="mb-8 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg backdrop-blur-sm">
-                    <div class="flex items-center gap-3">
-                        <div class="w-2 h-2 rounded-full bg-red-400 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
-                        {{ session('error') }}
-                    </div>
-                </div>
-            @endif
 
             <!-- Header -->
             <div class="mb-12">
@@ -36,6 +17,59 @@
                 </p>
             </div>
 
+            <!-- Dual Filter Tabs -->
+            <div class="mb-8 space-y-4 flex flex-col justify-between lg:flex-row">
+                <!-- Registration Status Tabs -->
+                <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider mb-2">Registration Status</p>
+                    <div class="border-b border-white/[0.08]">
+                        <div class="flex gap-1 overflow-x-auto">
+                            <a href="{{ route('registerations.index', ['event' => $event->id, 'status' => 'all', 'payment_status' => $paymentStatus]) }}"
+                                class="px-6 py-3 text-sm font-medium transition-all duration-200 border-b-2 {{ $status === 'all' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-white/60 hover:text-white/80 hover:border-white/20' }}">
+                                All
+                            </a>
+                            <a href="{{ route('registerations.index', ['event' => $event->id, 'status' => 'confirmed', 'payment_status' => $paymentStatus]) }}"
+                                class="px-6 py-3 text-sm font-medium transition-all duration-200 border-b-2 {{ $status === 'confirmed' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-white/60 hover:text-white/80 hover:border-white/20' }}">
+                                Confirmed
+                            </a>
+                            <a href="{{ route('registerations.index', ['event' => $event->id, 'status' => 'waitlisted', 'payment_status' => $paymentStatus]) }}"
+                                class="px-6 py-3 text-sm font-medium transition-all duration-200 border-b-2 {{ $status === 'waitlisted' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-white/60 hover:text-white/80 hover:border-white/20' }}">
+                                Waitlisted
+                            </a>
+                            <a href="{{ route('registerations.index', ['event' => $event->id, 'status' => 'cancelled', 'payment_status' => $paymentStatus]) }}"
+                                class="px-6 py-3 text-sm font-medium transition-all duration-200 border-b-2 {{ $status === 'cancelled' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-white/60 hover:text-white/80 hover:border-white/20' }}">
+                                Cancelled
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Status Tabs -->
+                <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider mb-2">Payment Status</p>
+                    <div class="border-b border-white/[0.08]">
+                        <div class="flex gap-1 overflow-x-auto">
+                            <a href="{{ route('registerations.index', ['event' => $event->id, 'status' => $status, 'payment_status' => 'all']) }}"
+                                class="px-6 py-3 text-sm font-medium transition-all duration-200 border-b-2 {{ $paymentStatus === 'all' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-white/60 hover:text-white/80 hover:border-white/20' }}">
+                                All
+                            </a>
+                            <a href="{{ route('registerations.index', ['event' => $event->id, 'status' => $status, 'payment_status' => 'paid']) }}"
+                                class="px-6 py-3 text-sm font-medium transition-all duration-200 border-b-2 {{ $paymentStatus === 'paid' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-white/60 hover:text-white/80 hover:border-white/20' }}">
+                                Paid
+                            </a>
+                            <a href="{{ route('registerations.index', ['event' => $event->id, 'status' => $status, 'payment_status' => 'pending']) }}"
+                                class="px-6 py-3 text-sm font-medium transition-all duration-200 border-b-2 {{ $paymentStatus === 'pending' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-white/60 hover:text-white/80 hover:border-white/20' }}">
+                                Pending
+                            </a>
+                            <a href="{{ route('registerations.index', ['event' => $event->id, 'status' => $status, 'payment_status' => 'refunded']) }}"
+                                class="px-6 py-3 text-sm font-medium transition-all duration-200 border-b-2 {{ $paymentStatus === 'refunded' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-white/60 hover:text-white/80 hover:border-white/20' }}">
+                                Refunded
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Content Card -->
             <div class="bg-white/[0.02] backdrop-blur-sm border border-white/[0.08] rounded-xl overflow-hidden">
                 <div class="p-8">
@@ -45,43 +79,52 @@
                             $registeration->attendee->name,
                             $registeration->attendee->email,
                             [
-                                'text' => $registeration->status,
-                                'color' => $registeration->status == 'confirmed' ? 'rgba(34, 211, 238, 0.1)' :
-                                    ($registeration->status == 'cancelled' ? 'rgba(239, 68, 68, 0.1)' :
-                                        ($registeration->status == 'waitlisted' ? 'rgba(156, 163, 175, 0.1)' :
-                                            'rgba(59, 130, 246, 0.1)')),
-                                'text_color' => $registeration->status == 'confirmed' ? '#22d3ee' :
-                                    ($registeration->status == 'cancelled' ? '#ef4444' :
-                                        ($registeration->status == 'waitlisted' ? '#9ca3af' :
-                                            '#3b82f6'))
+                                'text' => ucfirst($registeration->status),
+                                'color' => [
+                                    'Confirmed' => 'rgba(34, 211, 238, 0.1)',
+                                    'Cancelled' => 'rgba(239, 68, 68, 0.1)',
+                                    'Waitlisted' => 'rgba(156, 163, 175, 0.1)',
+                                    'Pending' => 'rgba(59, 130, 246, 0.1)'
+                                ],
+                                'text_color' => [
+                                    'Confirmed' => '#22d3ee',
+                                    'Cancelled' => '#ef4444',
+                                    'Waitlisted' => '#9ca3af',
+                                    'Pending' => '#3b82f6'
+                                ],
                             ],
                             [
-                                'text' => $registeration->payment_status,
-                                'color' => $registeration->payment_status == 'paid' ? 'rgba(34, 211, 238, 0.1)' :
-                                    ($registeration->payment_status == 'refunded' ? 'rgba(239, 68, 68, 0.1)' :
-                                        'rgba(59, 130, 246, 0.1)'),
-                                'text_color' => $registeration->payment_status == 'paid' ? '#22d3ee' :
-                                    ($registeration->payment_status == 'refunded' ? '#ef4444' :
-                                        '#3b82f6')
+                                'text' => ucfirst($registeration->payment_status),
+                                'color' => [
+                                    'Paid' => 'rgba(34, 211, 238, 0.1)',
+                                    'Refunded' => 'rgba(239, 68, 68, 0.1)',
+                                    'Pending' => 'rgba(59, 130, 246, 0.1)'
+                                ],
+                                'text_color' => [
+                                    'Paid' => '#22d3ee',
+                                    'Refunded' => '#ef4444',
+                                    'Pending' => '#3b82f6'
+                                ],
                             ]
-                        ])->toArray()"
-                                        :ids="$registerations->pluck('id')->toArray()" :actions="[
+                        ])->toArray()" :ids="$registerations->pluck('id')->toArray()" :actions="[
                             [
                                 'label' => 'Update Payment',
+                                'icon_name' => 'edit',
                                 'onclick' => 'payment-modal'
                             ],
                             [
                                 'label' => 'Cancel',
+                                'icon_name' => 'delete',
                                 'url' => 'registerations.cancel',
                                 'method' => 'patch'
                             ]
                         ]" :data-attributes="$registerations->map(fn($reg) => [
-                                                                    'data-status' => $reg->status,
-                                                                    'data-payment-status' => $reg->payment_status
-                                                                ])->toArray()" />
+                                                                                                                                                                                                                                                                                                                    'data-status' => $reg->status,
+                                                                                                                                                                                                                                                                                                                    'data-payment-status' => $reg->payment_status
+                                                                                                                                                                                                                                                                                                                ])->toArray()" />
 
                                     <div class="mt-6">
-                                        {{ $registerations->onEachSide(0)->links() }}
+                                        {{ $registerations->appends(['status' => $status, 'payment_status' => $paymentStatus])->onEachSide(0)->links() }}
                                     </div>
                     @else
                         <div class="text-center py-16">
