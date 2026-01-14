@@ -25,7 +25,7 @@
                 @foreach($row as $cell)
                 <td class="px-6 py-4 text-white/80 whitespace-nowrap">
                     @if(is_array($cell))
-                        <div class="px-2 py-1 capitalize text-xs rounded-full flex justify-center" style="background-color: {{ $cell['color'] }}; color: {{ $cell['text_color']??'white' }}">
+                        <div class="px-2 py-1 capitalize text-xs rounded-full flex justify-center" style="background-color: {{ $cell['color'][$cell['text']] }}; color: {{ $cell['text_color'][$cell['text']]??'white' }}">
                             {{ $cell['text'] }}</div>
                     @else
                         {{ $cell }}
@@ -33,14 +33,19 @@
                 </td>
                 @endforeach
                 @if(!empty($actions))
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap flex gap-1">
                     @foreach($actions as $action)
                     @if(isset($action['onclick']))
                         <button type="button" 
                                 data-action="{{ $action['onclick'] }}"
                                 data-id="{{ $ids[$index] }}"
-                                class="text-cyan-400 hover:text-cyan-300 mr-3 bg-transparent border-0 cursor-pointer underline transition-colors">
-                            {{ $action['label'] }}
+                                title="{{ $action['label'] ?? '' }}"
+                                class="text-cyan-400 hover:text-cyan-300 mr-3 bg-transparent border-0 cursor-pointer transition-colors {{ isset($action['icon']) || isset($action['icon_name']) ? '' : 'underline' }}">
+                            @if(isset($action['icon_name']))
+                                <x-icon :name="$action['icon_name']" />
+                            @else
+                                {!! $action['icon'] ?? $action['label'] !!} <!-- Show HTML Element or Label if not using predefined icons -->
+                            @endif
                         </button>
                     @else
                         @php
@@ -48,14 +53,25 @@
                             $method = $action['method'] ?? 'get';
                         @endphp
                         @if($method == 'get')
-                        <a href="{{ $url }}" class="text-cyan-400 hover:text-cyan-300 mr-3 underline transition-colors">
-                            {{ $action['label'] }}
+                        <a href="{{ $url }}" 
+                           title="{{ $action['label'] ?? '' }}"
+                           class="text-cyan-400 hover:text-cyan-300 mr-3 transition-colors {{ isset($action['icon']) || isset($action['icon_name']) ? '' : 'underline' }}">
+                            @if(isset($action['icon_name']))
+                                <x-icon :name="$action['icon_name']" />
+                            @else
+                                {!! $action['icon'] ?? $action['label'] !!}
+                            @endif
                         </a>
                         @else
                         <button type="button" 
                                 onclick="openDeleteModal('{{ $url }}', '{{ $method }}')" 
-                                class="text-red-400 hover:text-red-300 mr-3 bg-transparent border-0 cursor-pointer underline transition-colors">
-                            {{ $action['label'] }}
+                                title="{{ $action['label'] ?? '' }}"
+                                class="text-red-400 hover:text-red-300 mr-3 bg-transparent border-0 cursor-pointer transition-colors {{ isset($action['icon']) || isset($action['icon_name']) ? '' : 'underline' }}">
+                            @if(isset($action['icon_name']))
+                                <x-icon :name="$action['icon_name']" />
+                            @else
+                                {!! $action['icon'] ?? $action['label'] !!}
+                            @endif
                         </button>
                         @endif
                     @endif
