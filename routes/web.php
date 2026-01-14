@@ -31,7 +31,7 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
         Route::get('/create', 'create')->name('create');
         Route::post('/', 'store')->name('store');
         Route::get('/{event}/edit', 'edit')->name('edit');
-        Route::put('/{event}', 'update')->name('update');
+        Route::post('/{event}', 'update')->name('update');
         Route::delete('/{event}', 'destroy')->name('delete');
     });
 
