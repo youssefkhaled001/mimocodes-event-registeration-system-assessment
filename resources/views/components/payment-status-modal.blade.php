@@ -31,11 +31,11 @@
                     New Payment Status
                 </label>
                 <select id="payment_status" name="payment_status"
-                    class="w-full px-4 py-3 bg-white/[0.02] border border-white/[0.08] rounded-lg text-white focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all">
-                    <option value="">Select payment status...</option>
-                    <option value="pending">Pending</option>
-                    <option value="paid">Paid</option>
-                    <option value="refunded">Refunded</option>
+                    class="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-200 cursor-pointer">
+                    <option value="" class="bg-gray-900 text-white/60">Select payment status...</option>
+                    <option value="pending" class="bg-gray-900 text-white">Pending</option>
+                    <option value="paid" class="bg-gray-900 text-white">Paid</option>
+                    <option value="refunded" class="bg-gray-900 text-white">Refunded</option>
                 </select>
             </div>
 
@@ -58,7 +58,7 @@
                     Cancel
                 </button>
                 <button type="submit"
-                    class="flex-1 px-6 py-3 bg-cyan-500/10 border border-cyan-500/50 rounded-lg text-cyan-400 text-sm font-medium tracking-wide transition-all duration-300 hover:bg-cyan-500/20 hover:shadow-[0_0_20px_rgba(0,255,255,0.15)]">
+                    class="flex-1 px-6 py-3 bg-cyan-500/10 border border-cyan-500/50 rounded-lg text-cyan-400 text-sm font-medium tracking-wide transition-all duration-300 hover:bg-cyan-500/20 hover:shadow-[0_0_20px_rgba(0,255,255,0.15)] disabled:cursor-not-allowed disabled:opacity-50">
                     Update Status
                 </button>
             </div>
@@ -87,9 +87,9 @@
 
         // Display current status
         statusDisplay.innerHTML = `
-            <span class="text-sm">Registration: <span class="text-cyan-400">${registrationStatus}</span></span>
+            <span class="text-sm">Registration: <span class="text-cyan-400 capitalize">${registrationStatus}</span></span>
             <span class="text-white/30 mx-2">•</span>
-            <span class="text-sm">Payment: <span class="text-cyan-400">${paymentStatus}</span></span>
+            <span class="text-sm">Payment: <span class="text-cyan-400 capitalize">${paymentStatus}</span></span>
         `;
 
         // Reset select and warning
@@ -113,21 +113,24 @@
         const warningText = document.getElementById('paymentWarningText');
         const newPaymentStatus = this.value;
         const registrationStatus = currentRegistrationData.status;
-
+        const submitButton = document.querySelector('button[type="submit"]');
         warning.classList.add('hidden');
-
+        submitButton.disabled = false;
         // Business logic validation
         if (registrationStatus === 'waitlisted' && newPaymentStatus === 'paid') {
-            warningText.textContent = 'Waitlisted registrations cannot be marked as paid. Please confirm the registration first.';
+            warningText.textContent = 'Waitlisted registrations cannot be marked as paid.';
             warning.classList.remove('hidden');
+            submitButton.disabled = true;
             this.value = '';
         } else if (registrationStatus === 'cancelled' && newPaymentStatus === 'paid') {
             warningText.textContent = 'Cancelled registrations cannot be marked as paid.';
             warning.classList.remove('hidden');
+            submitButton.disabled = true;
             this.value = '';
         } else if (currentRegistrationData.paymentStatus === 'paid' && newPaymentStatus === 'refunded' && registrationStatus === 'confirmed') {
             warningText.textContent = 'To refund a confirmed registration, please cancel the registration first.';
             warning.classList.remove('hidden');
+            submitButton.disabled = true;
             this.value = '';
         }
     });
