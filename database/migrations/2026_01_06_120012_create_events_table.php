@@ -21,6 +21,10 @@ return new class extends Migration
             $table->integer('capacity');
             $table->decimal('price', 10, 2)->nullable();
             $table->enum('status', ['draft', 'published', 'cancelled', 'completed']);
+
+            // Indexes for frequently queried columns
+            $table->index('status');
+            $table->index('date_time');
         });
     }
 

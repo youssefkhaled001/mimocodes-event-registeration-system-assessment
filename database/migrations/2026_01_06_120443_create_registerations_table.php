@@ -19,6 +19,10 @@ return new class extends Migration
             $table->timestamp('registration_date');
             $table->enum('status', ['confirmed', 'waitlisted', 'cancelled']);
             $table->enum('payment_status', ['pending', 'paid', 'refunded']);
+
+            // Indexes for frequently queried columns
+            $table->index('status');
+            $table->index('payment_status');
         });
     }
 
