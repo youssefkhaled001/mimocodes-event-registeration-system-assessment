@@ -10,3 +10,6 @@ Artisan::command('inspire', function () {
 
 // Added Hourly Schedule to check completed events and change their status to completed
 Schedule::command('events:update-completed-events')->hourly();
+
+// Added Hourly Schedule to send 24-hour reminder emails to confirmed attendees
+Schedule::command('events:send-reminders')->hourly();

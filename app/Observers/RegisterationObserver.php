@@ -2,9 +2,11 @@
 
 namespace App\Observers;
 
+use App\Mail\WaitlistPromoted;
 use App\Models\Event;
 use App\Models\Registeration;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterationObserver
 {
@@ -35,6 +37,9 @@ class RegisterationObserver
 
                     if ($nextInLine) {
                         $nextInLine->update(['status' => 'confirmed']);
+
+                        // Send promotion email to the promoted attendee
+                        Mail::to($nextInLine->attendee->email)->queue(new WaitlistPromoted($nextInLine));
                     }
                 }
             });

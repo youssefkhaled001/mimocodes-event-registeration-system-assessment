@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RegistrationConfirmed;
+use App\Mail\WaitlistConfirmed;
 use App\Models\Attendee;
 use App\Models\Event;
 use App\Models\Registeration;
 use App\Services\RegisterationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Propaganistas\LaravelPhone\Rules\Phone;
 
 class RegisterationController extends Controller
@@ -104,11 +107,17 @@ class RegisterationController extends Controller
         try {
             $registeration = RegisterationService::register($attendee, $validatedData['event_id']);
 
-            // Check registration status and show appropriate message
+            // Send appropriate email based on registration status
             if ($registeration->status == 'waitlisted') {
-                return redirect()->back()->with('success', 'Registered successfully. You are on the waitlist.');
+                // Send waitlist confirmation email
+                Mail::to($attendee->email)->queue(new WaitlistConfirmed($registeration));
+                
+                return redirect()->back()->with('success', 'Registered successfully. You are on the waitlist. Check your email for details.');
             } else {
-                return redirect()->back()->with('success', 'Registered successfully. Your spot is confirmed!');
+                // Send registration confirmation email
+                Mail::to($attendee->email)->queue(new RegistrationConfirmed($registeration));
+                
+                return redirect()->back()->with('success', 'Registered successfully. Your spot is confirmed! Check your email for details.');
             }
         } catch (\Exception $e) {
             // Handle specific exceptions from the service
