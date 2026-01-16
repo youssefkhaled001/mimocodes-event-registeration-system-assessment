@@ -1,35 +1,38 @@
-<x-mail::message>
-    # Added to Waitlist
+@component('mail::message')
+# Added to Waitlist
 
-    Hello **{{ $attendee->name }}**,
+Hello **{{ $attendee->name }}**,
 
-    Thank you for your interest in **{{ $event->title }}**!
+Thank you for your interest in **{{ $event->title }}**!
 
-    <x-mail::panel>
-        ## Event Details
+@component('mail::panel')
+## Event Details
 
-        **Event:** {{ $event->title }}
-        **Date & Time:** {{ $event->date_time->format('l, F j, Y \a\t g:i A') }}
-        **Location:** {{ $event->location }}
-        **Price:** {{ $event->price > 0 ? '$' . number_format($event->price, 2) : 'Free' }}
-        **Status:** Waitlisted
-    </x-mail::panel>
+**Event:** {{ $event->title }}
 
-    Unfortunately, this event has reached full capacity. However, you've been added to the waitlist and will be
-    automatically confirmed if a spot becomes available.
+**Date & Time:** {{ $event->date_time->format('l, F j, Y \a\t g:i A') }}
 
-    ### What happens next?
+**Location:** {{ $event->location }}
 
-    - You'll receive an email immediately if a spot opens up
-    - Your position on the waitlist is secured
-    - No action is needed from you at this time
+**Price:** {{ $event->price > 0 ? '$' . number_format($event->price, 2) : 'Free' }}
 
-    We'll keep you updated on your waitlist status.
+**Status:** Waitlisted
+@endcomponent
 
-    <x-mail::button :url="url('/')">
-        Browse Other Events
-    </x-mail::button>
+Unfortunately, this event has reached full capacity. However, you've been added to the waitlist and will be
+automatically confirmed if a spot becomes available.
 
-    Thanks,<br>
-    {{ config('app.name') }}
-</x-mail::message>
+**What happens next?**
+- You'll receive an email immediately if a spot opens up
+- Your position on the waitlist is secured
+- No action is needed from you at this time
+
+We'll keep you updated on your waitlist status.
+
+@component('mail::button', ['url' => url('/events')])
+Browse Other Events
+@endcomponent
+
+Thanks,
+{{ config('app.name') }}
+@endcomponent
