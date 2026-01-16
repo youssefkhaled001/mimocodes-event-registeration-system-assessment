@@ -88,49 +88,15 @@
                 <div class="bg-white/[0.02] backdrop-blur-sm border border-white/[0.08] rounded-xl p-8">
                     <h2 class="font-serif text-2xl font-bold text-white mb-6">Event Status Distribution</h2>
 
-                    <div class="flex items-center justify-center gap-8">
-                        <!-- Donut Chart -->
-                        <div class="relative w-48 h-48">
-                            @php
-                                $eventTotal = $totalEvents > 0 ? $totalEvents : 1;
-                                $cumulativePercent = 0;
-                            @endphp
+                    @php
+                        $eventLabels = array_column($eventStatusData, 'label');
+                        $eventValues = array_column($eventStatusData, 'value');
+                        $eventColors = array_column($eventStatusData, 'color');
+                    @endphp
 
-                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                                @foreach($eventStatusData as $index => $item)
-                                    @php
-                                        $percent = ($item['value'] / $eventTotal) * 100;
-                                        $offset = $cumulativePercent * 2.51; // 251 is circumference (2 * π * 40)
-                                        $dashArray = ($percent * 2.51) . ' 251';
-                                        $cumulativePercent += $percent;
-                                    @endphp
-                                    <circle cx="50" cy="50" r="40" fill="none" stroke="{{ $item['color'] }}"
-                                        stroke-width="20" stroke-dasharray="{{ $dashArray }}"
-                                        stroke-dashoffset="-{{ $offset }}" class="transition-all duration-500" />
-                                @endforeach
-                                <!-- Inner circle for donut effect -->
-                                <circle cx="50" cy="50" r="30" fill="#0a0a0a" />
-                            </svg>
-
-                            <!-- Center text -->
-                            <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                <span class="text-3xl font-bold text-white">{{ $totalEvents }}</span>
-                                <span class="text-xs text-white/60">Events</span>
-                            </div>
-                        </div>
-
-                        <!-- Legend -->
-                        <div class="space-y-3">
-                            @foreach($eventStatusData as $item)
-                                <div class="flex items-center gap-3">
-                                    <div class="w-4 h-4 rounded-full" style="background-color: {{ $item['color'] }}"></div>
-                                    <div class="flex-1">
-                                        <div class="text-sm text-white/70">{{ $item['label'] }}</div>
-                                        <div class="text-lg font-semibold text-white">{{ $item['value'] }}</div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
+                    <div class="flex justify-center items-center" style="max-height: 300px;">
+                        <x-bladewind::chart type="doughnut" :labels="$eventLabels" :data="$eventValues"
+                            :colors="$eventColors" />
                     </div>
                 </div>
 
@@ -138,49 +104,15 @@
                 <div class="bg-white/[0.02] backdrop-blur-sm border border-white/[0.08] rounded-xl p-8">
                     <h2 class="font-serif text-2xl font-bold text-white mb-6">Registration Status</h2>
 
-                    <div class="flex items-center justify-center gap-8">
-                        <!-- Donut Chart -->
-                        <div class="relative w-48 h-48">
-                            @php
-                                $regTotal = $totalRegistrations > 0 ? $totalRegistrations : 1;
-                                $cumulativePercent = 0;
-                            @endphp
+                    @php
+                        $regLabels = array_column($registrationStatusData, 'label');
+                        $regValues = array_column($registrationStatusData, 'value');
+                        $regColors = array_column($registrationStatusData, 'color');
+                    @endphp
 
-                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                                @foreach($registrationStatusData as $index => $item)
-                                    @php
-                                        $percent = ($item['value'] / $regTotal) * 100;
-                                        $offset = $cumulativePercent * 2.51;
-                                        $dashArray = ($percent * 2.51) . ' 251';
-                                        $cumulativePercent += $percent;
-                                    @endphp
-                                    <circle cx="50" cy="50" r="40" fill="none" stroke="{{ $item['color'] }}"
-                                        stroke-width="20" stroke-dasharray="{{ $dashArray }}"
-                                        stroke-dashoffset="-{{ $offset }}" class="transition-all duration-500" />
-                                @endforeach
-                                <!-- Inner circle for donut effect -->
-                                <circle cx="50" cy="50" r="30" fill="#0a0a0a" />
-                            </svg>
-
-                            <!-- Center text -->
-                            <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                <span class="text-3xl font-bold text-white">{{ $totalRegistrations }}</span>
-                                <span class="text-xs text-white/60">Registrations</span>
-                            </div>
-                        </div>
-
-                        <!-- Legend -->
-                        <div class="space-y-3">
-                            @foreach($registrationStatusData as $item)
-                                <div class="flex items-center gap-3">
-                                    <div class="w-4 h-4 rounded-full" style="background-color: {{ $item['color'] }}"></div>
-                                    <div class="flex-1">
-                                        <div class="text-sm text-white/70">{{ $item['label'] }}</div>
-                                        <div class="text-lg font-semibold text-white">{{ $item['value'] }}</div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
+                    <div class="flex justify-center items-center" style="max-height: 300px;">
+                        <x-bladewind::chart type="doughnut" :labels="$regLabels" :data="$regValues"
+                            :colors="$regColors" />
                     </div>
                 </div>
             </div>
@@ -190,101 +122,12 @@
                 <h2 class="font-serif text-2xl font-bold text-white mb-6">Revenue Trend (Last 30 Days)</h2>
 
                 @php
-                    $maxRevenue = max(array_column($revenueTrend, 'revenue'));
-                    $maxRevenue = $maxRevenue > 0 ? $maxRevenue : 1;
-                    $chartHeight = 200;
-                    $chartWidth = 600;
+                    $revenueLabels = array_column($revenueTrend, 'date');
+                    $revenueValues = array_column($revenueTrend, 'revenue');
                 @endphp
 
-                <div class="relative" style="height: 280px;">
-                    <!-- Y-axis labels -->
-                    <div class="absolute left-0 top-0 bottom-12 flex flex-col justify-between text-xs text-white/40 pr-3 w-16 text-right">
-                        <span>${{ number_format($maxRevenue, 0) }}</span>
-                        <span>${{ number_format($maxRevenue * 0.75, 0) }}</span>
-                        <span>${{ number_format($maxRevenue * 0.5, 0) }}</span>
-                        <span>${{ number_format($maxRevenue * 0.25, 0) }}</span>
-                        <span>$0</span>
-                    </div>
-
-                    <!-- SVG Chart -->
-                    <div class="ml-20 h-full">
-                        <svg class="w-full" style="height: {{ $chartHeight }}px;" viewBox="0 0 {{ $chartWidth }} {{ $chartHeight }}" preserveAspectRatio="none">
-                            <defs>
-                                <!-- Gradient for area fill -->
-                                <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.3" />
-                                    <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0" />
-                                </linearGradient>
-                            </defs>
-
-                            <!-- Grid lines -->
-                            @for ($i = 0; $i <= 4; $i++)
-                                <line x1="0" y1="{{ ($chartHeight / 4) * $i }}" 
-                                      x2="{{ $chartWidth }}" y2="{{ ($chartHeight / 4) * $i }}" 
-                                      stroke="rgba(255,255,255,0.05)" stroke-width="1" />
-                            @endfor
-
-                            @php
-                                $points = [];
-                                $areaPoints = "0,{$chartHeight} ";
-                                $segmentWidth = $chartWidth / (count($revenueTrend) - 1);
-                                
-                                foreach ($revenueTrend as $index => $day) {
-                                    $x = $index * $segmentWidth;
-                                    $y = $chartHeight - (($day['revenue'] / $maxRevenue) * $chartHeight);
-                                    $points[] = "{$x},{$y}";
-                                    $areaPoints .= "{$x},{$y} ";
-                                }
-                                $areaPoints .= "{$chartWidth},{$chartHeight}";
-                                $linePoints = implode(' ', $points);
-                            @endphp
-
-                            <!-- Area fill -->
-                            <polygon points="{{ $areaPoints }}" fill="url(#areaGradient)" />
-
-                            <!-- Line -->
-                            <polyline points="{{ $linePoints }}" 
-                                      fill="none" 
-                                      stroke="#06b6d4" 
-                                      stroke-width="3" 
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round" />
-
-                            <!-- Data points -->
-                            @foreach ($revenueTrend as $index => $day)
-                                @php
-                                    $x = $index * $segmentWidth;
-                                    $y = $chartHeight - (($day['revenue'] / $maxRevenue) * $chartHeight);
-                                @endphp
-                                <circle cx="{{ $x }}" cy="{{ $y }}" r="5" 
-                                        fill="#06b6d4" 
-                                        stroke="#0a0a0a" 
-                                        stroke-width="2"
-                                        class="hover:r-7 transition-all cursor-pointer" />
-                                
-                                <!-- Hover tooltip area -->
-                                <g class="opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
-                                    <rect x="{{ $x - 40 }}" y="{{ max(0, $y - 50) }}" width="80" height="40" 
-                                          rx="6" fill="#1a1a1a" stroke="#06b6d4" stroke-width="1" />
-                                    <text x="{{ $x }}" y="{{ max(15, $y - 30) }}" 
-                                          text-anchor="middle" fill="#ffffff" font-size="12" font-weight="600">
-                                        ${{ number_format($day['revenue'], 0) }}
-                                    </text>
-                                    <text x="{{ $x }}" y="{{ max(30, $y - 15) }}" 
-                                          text-anchor="middle" fill="#9ca3af" font-size="10">
-                                        {{ $day['date'] }}
-                                    </text>
-                                </g>
-                            @endforeach
-                        </svg>
-
-                        <!-- X-axis labels -->
-                        <div class="flex justify-between text-xs text-white/40 mt-2">
-                            @foreach ($revenueTrend as $day)
-                                <span class="flex-1 text-center">{{ $day['date'] }}</span>
-                            @endforeach
-                        </div>
-                    </div>
+                <div class="w-full flex justify-center" style="height: 300px;">
+                    <x-bladewind::chart type="line" :labels="$revenueLabels" :data="$revenueValues" color="#06b6d4" />
                 </div>
 
                 <!-- Summary -->
