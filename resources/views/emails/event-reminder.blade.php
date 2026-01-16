@@ -1,43 +1,45 @@
-<x-mail::message>
-    # Event Reminder: Tomorrow! ⏰
+@component('mail::message')
+# Event Reminder: Tomorrow! ⏰
 
-    Hello **{{ $attendee->name }}**,
+Hello **{{ $attendee->name }}**,
 
-    This is a friendly reminder that **{{ $event->title }}** is happening tomorrow!
+This is a friendly reminder that **{{ $event->title }}** is happening tomorrow!
 
-    <x-mail::panel>
-        ## Event Details
+@component('mail::panel')
+## Event Details
 
-        **Event:** {{ $event->title }}
-        **Date & Time:** {{ $event->date_time->format('l, F j, Y \a\t g:i A') }}
-        **Location:** {{ $event->location }}
-        **Your Status:** Confirmed ✓
-    </x-mail::panel>
+**Event:** {{ $event->title }}
 
-    ### What to bring:
-    - Your confirmation (this email)
-    - Valid ID
-    - Any materials mentioned in the event description
+**Date & Time:** {{ $event->date_time->format('l, F j, Y \a\t g:i A') }}
 
-    ### Getting there:
-    **Location:** {{ $event->location }}
+**Location:** {{ $event->location }}
 
-    We recommend arriving 15 minutes early to check in.
+**Your Status:** Confirmed ✓
+@endcomponent
 
-    @if($event->price > 0 && $registration->payment_status === 'pending')
-        <x-mail::panel>
-            ⚠️ **Payment Reminder**
+**What to bring:**
+- Your confirmation (this email)
+- Valid ID
+- Any materials mentioned in the event description
 
-            Your payment status is currently **pending**. Please complete your payment before the event.
-        </x-mail::panel>
-    @endif
+**Getting there:**
 
-    We're looking forward to seeing you tomorrow!
+We recommend arriving 15 minutes early to check in at {{ $event->location }}.
 
-    <x-mail::button :url="url('/')">
-        View Event Details
-    </x-mail::button>
+@if($event->price > 0 && $registration->payment_status === 'pending')
+    @component('mail::panel')
+    ⚠️ **Payment Reminder**
 
-    Thanks,<br>
-    {{ config('app.name') }}
-</x-mail::message>
+    Your payment status is currently pending. Please complete your payment before the event.
+    @endcomponent
+@endif
+
+We're looking forward to seeing you tomorrow!
+
+@component('mail::button', ['url' => url('/events/' . $event->id)])
+View Event Details
+@endcomponent
+
+Thanks,
+{{ config('app.name') }}
+@endcomponent

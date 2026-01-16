@@ -28,7 +28,7 @@ class EventReminder extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reminder: Event Tomorrow - ' . $this->registration->event->title,
+            subject: 'Reminder: Event Tomorrow - '.$this->registration->event->title,
         );
     }
 

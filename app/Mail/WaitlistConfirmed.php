@@ -28,7 +28,7 @@ class WaitlistConfirmed extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Added to Waitlist - ' . $this->registration->event->title,
+            subject: 'Added to Waitlist - '.$this->registration->event->title,
         );
     }
 
