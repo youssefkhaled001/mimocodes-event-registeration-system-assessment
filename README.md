@@ -1,59 +1,382 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Mimocodes Event Registration System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive event management and registration system built with Laravel 12, featuring a modern dark glassmorphism UI inspired by Mimocodes aesthetic.
 
-## About Laravel
+## Table of Contents
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   [Features](#features)
+-   [Requirements](#requirements)
+-   [Installation](#installation)
+-   [Database Configuration](#database-configuration)
+-   [Admin Credentials](#admin-credentials)
+-   [Running the Application](#running-the-application)
+-   [Testing](#testing)
+-   [Project Structure](#project-structure)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Public Features
 
-## Learning Laravel
+-   **Event Listing Page**: Browse all published events with a premium dark-themed UI
+-   **Event Registration**:
+    -   Dual registration flow for new and returning users
+    -   Tabbed interface for seamless user experience
+    -   Email-based quick registration for returning attendees
+    -   Full registration form for new attendees
+-   **Automatic Waitlist Management**: When events reach capacity, new registrations are automatically waitlisted
+-   **Responsive Design**: Mobile-friendly interface with glassmorphism effects and cyan accent colors
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Admin Features
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **Dashboard**:
+    -   Event statistics (total, published, draft, completed)
+    -   Registration status overview (confirmed, waitlisted, cancelled)
+    -   Payment status tracking (paid, pending, refunded)
+    -   Revenue trends visualization with interactive line charts
+    -   Interactive doughnut charts for status distributions (powered by Bladewind/Chart.js)
+-   **Event Management**:
+    -   Create, edit, and delete events
+    -   Set event capacity, pricing, and location
+    -   Manage event status (draft, published, completed)
+    -   View all events in a paginated table
+-   **Registration Management**:
+    -   View all registrations for specific events
+    -   Update payment status (paid, pending, refunded)
+    -   Cancel registrations with automatic waitlist promotion
+    -   Filter and search registrations
+-   **Profile Management**: Update admin profile and password
 
-## Laravel Sponsors
+### Advanced Features
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   **Email Notifications**: Automated email system for attendee communication
+    -   Registration confirmation emails (confirmed and waitlisted)
+    -   Waitlist promotion notifications
+    -   24-hour event reminder emails
+    -   Queued email delivery for performance
+-   **Automatic Waitlist Promotion**: When a confirmed registration is cancelled, the first waitlisted attendee is automatically promoted to confirmed status
+-   **Scheduled Event Completion**: Events are automatically marked as completed 1 hour after their start time
+-   **Queue System**: Background job processing for email notifications and heavy tasks
+-   **Database Transactions**: Ensures data consistency during critical operations
+-   **HEIC Image Support**: Upload and preview HEIC images with automatic conversion
+-   **Custom Pagination**: Styled pagination matching the Mimocodes aesthetic
+-   **Custom Scrollbar**: Global dark-themed scrollbar styling
 
-### Premium Partners
+## Requirements
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+-   PHP 8.2 or higher
+-   Composer
+-   Node.js 18+ and npm
+-   PostgreSQL 13+ (or SQLite for development)
+-   Laravel Herd (optional, for local development)
 
-## Contributing
+## Installation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 1. Clone the Repository
 
-## Code of Conduct
+```bash
+git clone https://github.com/youssefkhaled001/mimocodes-event-registeration-system-assessment.git
+cd mimocodes-event-registeration-system-assessment
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 2. Quick Setup (Recommended)
 
-## Security Vulnerabilities
+Run the automated setup script:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+composer run setup
+```
+
+This will:
+
+-   Install PHP dependencies
+-   Copy `.env.example` to `.env`
+-   Generate application key
+-   Run database migrations
+-   Install Node.js dependencies
+-   Build frontend assets
+
+### 3. Manual Setup (Alternative)
+
+If you prefer manual setup:
+
+```bash
+# Install PHP dependencies
+composer install
+
+# Copy environment file
+cp .env.example .env
+
+# Generate application key
+php artisan key:generate
+
+# Install Node.js dependencies
+npm install
+
+# Build frontend assets
+npm run build
+```
+
+## Database Configuration
+
+### Option 1: PostgreSQL (Recommended for Production)
+
+1. Create a PostgreSQL database:
+
+```sql
+CREATE DATABASE mimocodes_event_registeration_system_assessment;
+```
+
+2. Update your `.env` file:
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=mimocodes_event_registeration_system_assessment
+DB_USERNAME=your_postgres_username
+DB_PASSWORD=your_postgres_password
+```
+
+### Option 2: SQLite (Recommended for Development)
+
+1. Update your `.env` file:
+
+```env
+DB_CONNECTION=sqlite
+# Comment out or remove these lines:
+# DB_HOST=127.0.0.1
+# DB_PORT=5432
+# DB_DATABASE=mimocodes_event_registeration_system_assessment
+# DB_USERNAME=root
+# DB_PASSWORD=
+```
+
+2. Create the SQLite database file:
+
+```bash
+touch database/database.sqlite
+```
+
+### Run Migrations
+
+```bash
+php artisan migrate
+```
+
+### Seed the Database (Optional)
+
+To populate the database with sample data:
+
+```bash
+php artisan db:seed
+```
+
+This will create:
+
+-   1 test user (admin)
+-   300 sample events
+-   700 sample attendees
+-   3000 sample registrations
+
+## Admin Credentials
+
+After running the database seeder, you can log in with:
+
+**Email**: `test@example.com`  
+**Password**: `password`
+
+> **Note**: If you haven't run the seeder, you'll need to register a new admin account through the registration flow.
+
+## Running the Application
+
+### Development Mode (All Services)
+
+Run all development services (Laravel server, Vite, Queue worker, and Scheduler):
+
+```bash
+composer run dev
+```
+
+This starts:
+
+-   **Laravel Server**: http://localhost:8000
+-   **Vite Dev Server**: http://localhost:5173
+-   **Queue Worker**: Processes background jobs
+-   **Scheduler**: Runs scheduled tasks (e.g., auto-completing events)
+
+### Individual Services
+
+If you prefer to run services separately:
+
+```bash
+# Laravel development server
+php artisan serve
+
+# Vite development server (for hot module replacement)
+npm run dev
+
+# Queue worker (for background jobs)
+php artisan queue:listen --tries=1
+
+# Scheduler (for scheduled tasks)
+php artisan schedule:work
+```
+
+### Production Build
+
+```bash
+# Build optimized assets
+npm run build
+
+# Optimize Laravel
+php artisan optimize
+```
+
+## Testing
+
+Run the test suite:
+
+```bash
+composer run test
+```
+
+Or run tests directly:
+
+```bash
+php artisan test
+```
+
+## Project Structure
+
+```
+├── app/
+│   ├── Console/Commands/        # Custom Artisan commands
+│   │   └── UpdateCompletedEvents.php
+│   ├── Http/Controllers/        # Application controllers
+│   │   ├── EventController.php
+│   │   ├── RegisterationController.php
+│   │   └── ProfileController.php
+│   ├── Models/                  # Eloquent models
+│   │   ├── Event.php
+│   │   ├── Attendee.php
+│   │   ├── Registeration.php
+│   │   └── User.php
+│   └── Observers/               # Model observers
+│       └── RegisterationObserver.php
+├── database/
+│   ├── factories/               # Model factories
+│   ├── migrations/              # Database migrations
+│   └── seeders/                 # Database seeders
+├── resources/
+│   ├── css/                     # Stylesheets
+│   ├── js/                      # JavaScript files
+│   └── views/                   # Blade templates
+│       ├── admin/               # Admin panel views
+│       ├── components/          # Reusable components
+│       └── layouts/             # Layout templates
+├── routes/
+│   ├── web.php                  # Web routes
+│   └── auth.php                 # Authentication routes
+└── public/                      # Public assets
+```
+
+## Design System
+
+The application uses a custom design system with:
+
+-   **Color Palette**: Dark theme with cyan accents (#06b6d4)
+-   **Typography**: Playfair Display (headings) and Inter (body)
+-   **Effects**: Glassmorphism, subtle shadows, and smooth animations
+-   **Components**: Custom-styled forms, tables, buttons, and cards
+
+## Key Workflows
+
+### Event Lifecycle
+
+1. **Draft** → Created but not visible to public
+2. **Published** → Visible and accepting registrations
+3. **Completed** → Auto-marked 1 hour after event start time
+
+### Registration Lifecycle
+
+1. **Confirmed** → Attendee has a guaranteed spot
+2. **Waitlisted** → Event at capacity, waiting for cancellations
+3. **Cancelled** → Registration cancelled (triggers waitlist promotion)
+
+### Payment Status
+
+-   **Pending** → Payment not yet received
+-   **Paid** → Payment confirmed
+-   **Refunded** → Payment returned to attendee
+
+## Environment Variables
+
+Key environment variables to configure:
+
+```env
+APP_NAME="Mimocodes Event Registration"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost:8000
+
+# Database
+DB_CONNECTION=pgsql
+DB_DATABASE=mimocodes_event_registeration_system_assessment
+
+# Queue
+QUEUE_CONNECTION=database
+
+# Cache
+CACHE_STORE=database
+
+# Session
+SESSION_DRIVER=database
+
+# Mail (for notifications)
+MAIL_MAILER=log
+```
+
+## Troubleshooting
+
+### Port Already in Use
+
+If port 8000 is already in use, specify a different port:
+
+```bash
+php artisan serve --port=8080
+```
+
+### Database Connection Issues
+
+-   Verify PostgreSQL is running: `pg_isready`
+-   Check database credentials in `.env`
+-   For SQLite, ensure `database/database.sqlite` exists
+
+### Asset Build Errors
+
+```bash
+# Clear npm cache
+npm cache clean --force
+
+# Reinstall dependencies
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Queue Not Processing
+
+Ensure the queue worker is running:
+
+```bash
+php artisan queue:listen
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Acknowledgments
+
+-   Built with [Laravel 12](https://laravel.com)
+-   UI components from [Bladewind](https://bladewindui.com)
+-   Design inspired by [Mimocodes](https://mimocodes.com)
