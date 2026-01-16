@@ -63,6 +63,6 @@ class SendEventReminders extends Command
             \Log::info('No reminder emails to send.');
         }
 
-        return 0;
+        return $emailsSent;
     }
 }

@@ -111,12 +111,12 @@ class RegisterationController extends Controller
             if ($registeration->status == 'waitlisted') {
                 // Send waitlist confirmation email
                 Mail::to($attendee->email)->queue(new WaitlistConfirmed($registeration));
-                
+
                 return redirect()->back()->with('success', 'Registered successfully. You are on the waitlist. Check your email for details.');
             } else {
                 // Send registration confirmation email
                 Mail::to($attendee->email)->queue(new RegistrationConfirmed($registeration));
-                
+
                 return redirect()->back()->with('success', 'Registered successfully. Your spot is confirmed! Check your email for details.');
             }
         } catch (\Exception $e) {
