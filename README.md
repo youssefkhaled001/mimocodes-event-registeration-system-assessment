@@ -2,72 +2,89 @@
 
 A comprehensive event management and registration system built with Laravel 12, featuring a modern dark glassmorphism UI inspired by Mimocodes aesthetic.
 
+## 📹 Demo Video
+
+Watch a complete walkthrough of the application: [Demo Video](https://drive.google.com/file/d/1ubXEYiBzFPua47CbADT2pFRFIHoXWrjJ/view?usp=sharing)
+
+Duration: ~5 minutes
+
+## 🎯 Quick Overview
+
+**Core Features Implemented**: All required features
+**Bonus Feature**: Email Notifications + Statistical Dashboard
+**Special Highlights**:
+
+- Automated waitlist promotion system
+- Race condition prevention with database locking
+- Interactive dashboard with Chart.js visualizations
+- Responsive dark glassmorphism UI
+
 ## Table of Contents
 
--   [Features](#features)
--   [Requirements](#requirements)
--   [Installation](#installation)
--   [Database Configuration](#database-configuration)
--   [Admin Credentials](#admin-credentials)
--   [Running the Application](#running-the-application)
--   [Testing](#testing)
--   [Project Structure](#project-structure)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Database Configuration](#database-configuration)
+- [Admin Credentials](#admin-credentials)
+- [Running the Application](#running-the-application)
+- [Testing](#testing)
+- [Project Structure](#project-structure)
 
 ## Features
 
 ### Public Features
 
--   **Event Listing Page**: Browse all published events with a premium dark-themed UI
--   **Event Registration**:
-    -   Dual registration flow for new and returning users
-    -   Tabbed interface for seamless user experience
-    -   Email-based quick registration for returning attendees
-    -   Full registration form for new attendees
--   **Automatic Waitlist Management**: When events reach capacity, new registrations are automatically waitlisted
--   **Responsive Design**: Mobile-friendly interface with glassmorphism effects and cyan accent colors
+- **Event Listing Page**: Browse all published events with a premium dark-themed UI
+- **Event Registration**:
+    - Dual registration flow for new and returning users
+    - Tabbed interface for seamless user experience
+    - Email-based quick registration for returning attendees
+    - Full registration form for new attendees
+- **Automatic Waitlist Management**: When events reach capacity, new registrations are automatically waitlisted
+- **Responsive Design**: Mobile-friendly interface with glassmorphism effects and cyan accent colors
 
 ### Admin Features
 
--   **Dashboard**:
-    -   Event statistics (total, published, draft, completed)
-    -   Registration status overview (confirmed, waitlisted, cancelled)
-    -   Payment status tracking (paid, pending, refunded)
-    -   Revenue trends visualization with interactive line charts
-    -   Interactive doughnut charts for status distributions (powered by Bladewind/Chart.js)
--   **Event Management**:
-    -   Create, edit, and delete events
-    -   Set event capacity, pricing, and location
-    -   Manage event status (draft, published, completed)
-    -   View all events in a paginated table
--   **Registration Management**:
-    -   View all registrations for specific events
-    -   Update payment status (paid, pending, refunded)
-    -   Cancel registrations with automatic waitlist promotion
-    -   Filter and search registrations
--   **Profile Management**: Update admin profile and password
+- **Dashboard**:
+    - Event statistics (total, published, draft, completed)
+    - Registration status overview (confirmed, waitlisted, cancelled)
+    - Payment status tracking (paid, pending, refunded)
+    - Revenue trends visualization with interactive line charts
+    - Interactive doughnut charts for status distributions (powered by Bladewind/Chart.js)
+- **Event Management**:
+    - Create, edit, and delete events
+    - Set event capacity, pricing, and location
+    - Manage event status (draft, published, completed)
+    - View all events in a paginated table
+- **Registration Management**:
+    - View all registrations for specific events
+    - Update payment status (paid, pending, refunded)
+    - Cancel registrations with automatic waitlist promotion
+    - Filter and search registrations
+- **Profile Management**: Update admin profile and password
 
 ### Advanced Features
 
--   **Email Notifications**: Automated email system for attendee communication
-    -   Registration confirmation emails (confirmed and waitlisted)
-    -   Waitlist promotion notifications
-    -   24-hour event reminder emails
-    -   Queued email delivery for performance
--   **Automatic Waitlist Promotion**: When a confirmed registration is cancelled, the first waitlisted attendee is automatically promoted to confirmed status
--   **Scheduled Event Completion**: Events are automatically marked as completed 1 hour after their start time
--   **Queue System**: Background job processing for email notifications and heavy tasks
--   **Database Transactions**: Ensures data consistency during critical operations
--   **HEIC Image Support**: Upload and preview HEIC images with automatic conversion
--   **Custom Pagination**: Styled pagination matching the Mimocodes aesthetic
--   **Custom Scrollbar**: Global dark-themed scrollbar styling
+- **Email Notifications**: Automated email system for attendee communication
+    - Registration confirmation emails (confirmed and waitlisted)
+    - Waitlist promotion notifications
+    - 24-hour event reminder emails
+    - Queued email delivery for performance
+- **Automatic Waitlist Promotion**: When a confirmed registration is cancelled, the first waitlisted attendee is automatically promoted to confirmed status
+- **Scheduled Event Completion**: Events are automatically marked as completed 1 hour after their start time
+- **Queue System**: Background job processing for email notifications and heavy tasks
+- **Database Transactions**: Ensures data consistency during critical operations
+- **HEIC Image Support**: Upload and preview HEIC images with automatic conversion
+- **Custom Pagination**: Styled pagination matching the Mimocodes aesthetic
+- **Custom Scrollbar**: Global dark-themed scrollbar styling
 
 ## Requirements
 
--   PHP 8.2 or higher
--   Composer
--   Node.js 18+ and npm
--   PostgreSQL 13+ (or SQLite for development)
--   Laravel Herd (optional, for local development)
+- PHP 8.2 or higher
+- Composer
+- Node.js 18+ and npm
+- PostgreSQL 13+ (or SQLite for development)
+- Laravel Herd (optional, for local development)
 
 ## Installation
 
@@ -88,12 +105,12 @@ composer run setup
 
 This will:
 
--   Install PHP dependencies
--   Copy `.env.example` to `.env`
--   Generate application key
--   Run database migrations
--   Install Node.js dependencies
--   Build frontend assets
+- Install PHP dependencies
+- Copy `.env.example` to `.env`
+- Generate application key
+- Run database migrations
+- Install Node.js dependencies
+- Build frontend assets
 
 ### 3. Manual Setup (Alternative)
 
@@ -173,10 +190,10 @@ php artisan db:seed
 
 This will create:
 
--   1 test user (admin)
--   300 sample events
--   700 sample attendees
--   3000 sample registrations
+- 1 test user (admin)
+- 300 sample events
+- 700 sample attendees
+- 3000 sample registrations
 
 ## Admin Credentials
 
@@ -199,10 +216,10 @@ composer run dev
 
 This starts:
 
--   **Laravel Server**: http://localhost:8000
--   **Vite Dev Server**: http://localhost:5173
--   **Queue Worker**: Processes background jobs
--   **Scheduler**: Runs scheduled tasks (e.g., auto-completing events)
+- **Laravel Server**: http://localhost:8000
+- **Vite Dev Server**: http://localhost:5173
+- **Queue Worker**: Processes background jobs
+- **Scheduler**: Runs scheduled tasks (e.g., auto-completing events)
 
 ### Individual Services
 
@@ -284,10 +301,10 @@ php artisan test
 
 The application uses a custom design system with:
 
--   **Color Palette**: Dark theme with cyan accents (#06b6d4)
--   **Typography**: Playfair Display (headings) and Inter (body)
--   **Effects**: Glassmorphism, subtle shadows, and smooth animations
--   **Components**: Custom-styled forms, tables, buttons, and cards
+- **Color Palette**: Dark theme with cyan accents (#06b6d4)
+- **Typography**: Playfair Display (headings) and Inter (body)
+- **Effects**: Glassmorphism, subtle shadows, and smooth animations
+- **Components**: Custom-styled forms, tables, buttons, and cards
 
 ## Key Workflows
 
@@ -305,9 +322,9 @@ The application uses a custom design system with:
 
 ### Payment Status
 
--   **Pending** → Payment not yet received
--   **Paid** → Payment confirmed
--   **Refunded** → Payment returned to attendee
+- **Pending** → Payment not yet received
+- **Paid** → Payment confirmed
+- **Refunded** → Payment returned to attendee
 
 ## Environment Variables
 
@@ -348,9 +365,9 @@ php artisan serve --port=8080
 
 ### Database Connection Issues
 
--   Verify PostgreSQL is running: `pg_isready`
--   Check database credentials in `.env`
--   For SQLite, ensure `database/database.sqlite` exists
+- Verify PostgreSQL is running: `pg_isready`
+- Check database credentials in `.env`
+- For SQLite, ensure `database/database.sqlite` exists
 
 ### Asset Build Errors
 
@@ -377,6 +394,6 @@ This project is open-sourced software licensed under the [MIT license](https://o
 
 ## Acknowledgments
 
--   Built with [Laravel 12](https://laravel.com)
--   UI components from [Bladewind](https://bladewindui.com)
--   Design inspired by [Mimocodes](https://mimocodes.com)
+- Built with [Laravel 12](https://laravel.com)
+- UI components from [Bladewind](https://bladewindui.com)
+- Design inspired by [Mimocodes](https://mimocodes.com)
